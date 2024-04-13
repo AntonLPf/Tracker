@@ -9,6 +9,10 @@ import UIKit
 
 class TrackersViewController: UIViewController {
     
+    var categories: [TrackerCategory] = []
+    
+    var completedTrackers: [TrackerRecord] = []
+    
     private lazy var plusButtonView: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapPlusButton))
         button.tintColor = .black
@@ -18,7 +22,9 @@ class TrackersViewController: UIViewController {
     private lazy var datePickerView: UIBarButtonItem = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .compact
         let item = UIBarButtonItem(customView: datePicker)
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         return item
     }()
         
@@ -48,5 +54,13 @@ class TrackersViewController: UIViewController {
     
     @objc private func didTapPlusButton(_ sender: Any) {
         
+    }
+    
+    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+        let selectedDate = sender.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        let formattedDate = dateFormatter.string(from: selectedDate)
+        print("Выбранная дата: \(formattedDate)")
     }
 }
