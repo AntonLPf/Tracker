@@ -54,10 +54,8 @@ class TrackersViewController: UIViewController {
     
     @objc private func didTapPlusButton(_ sender: Any) {
         let createTrackerVC = CreateTrackerVC()
-        let navVC = UINavigationController(rootViewController: createTrackerVC)
-        navVC.navigationBar.prefersLargeTitles = false
-        navVC.modalPresentationStyle = .formSheet
-        present(navVC, animated: true, completion: nil)
+        createTrackerVC.modalPresentationStyle = .formSheet
+        present(createTrackerVC, animated: true, completion: nil)
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {

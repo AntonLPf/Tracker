@@ -24,7 +24,7 @@ class CreateTrackerVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground  
-        title = "Создание трекера"
+        setLogo(to: "Создание трекера")
         configure(button: habbitButton, title: "Привычка", action: #selector(didTapHabbitButton))
         configure(button: oneTimeEventButton, title: "Нерегулярное событие", action: #selector(didTapOneTimeEventButton))
         vStack.addArrangedSubview(habbitButton)
@@ -57,7 +57,9 @@ class CreateTrackerVC: UIViewController {
     }
     
     @objc func didTapHabbitButton() {
-        
+        let newHabbitVC = NewHabbitScreenVC()
+        newHabbitVC.modalPresentationStyle = .formSheet
+        present(newHabbitVC, animated: true, completion: nil)
     }
     
     @objc func didTapOneTimeEventButton() {
@@ -68,5 +70,3 @@ class CreateTrackerVC: UIViewController {
 #Preview {
     CreateTrackerVC()
 }
-
-
