@@ -8,7 +8,7 @@
 import UIKit
 
 class CreateTrackerVC: UIViewController {
-    
+        
     private let habbitButton: UIButton = UIButton(type: .system)
     
     private let oneTimeEventButton: UIButton = UIButton(type: .system)
@@ -57,13 +57,15 @@ class CreateTrackerVC: UIViewController {
     }
     
     @objc func didTapHabbitButton() {
-        let newHabbitVC = NewHabbitScreenVC()
+        let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: false)
         newHabbitVC.modalPresentationStyle = .formSheet
         present(newHabbitVC, animated: true, completion: nil)
     }
     
     @objc func didTapOneTimeEventButton() {
-        
+        let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: true)
+        newHabbitVC.modalPresentationStyle = .formSheet
+        present(newHabbitVC, animated: true, completion: nil)
     }
 }
 

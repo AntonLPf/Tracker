@@ -10,12 +10,15 @@ import UIKit
 class NewHabbitScreenVC: UIViewController {
     
     static let cellHeight: CGFloat = 75
-    static let cellCornerRadius: CGFloat = 16
+    static let cornerRadius: CGFloat = 16
+    static let padding: CGFloat = 16
+    
+    private let isIrregularHabbit: Bool
     
     private lazy var textFieldBackgroundView: UIView = {
         let textFieldBackgroundView = UIView()
         textFieldBackgroundView.backgroundColor = .ypBackgroundGray
-        textFieldBackgroundView.layer.cornerRadius = Self.cellCornerRadius
+        textFieldBackgroundView.layer.cornerRadius = Self.cornerRadius
         textFieldBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -28,7 +31,7 @@ class NewHabbitScreenVC: UIViewController {
     private lazy var nameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите название трекера"
-        
+        textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
@@ -37,22 +40,13 @@ class NewHabbitScreenVC: UIViewController {
     private lazy var optionsCellsBackgroundView: UIView = {
         let optionsCellsBackgroundView = UIView()
         optionsCellsBackgroundView.backgroundColor = .ypBackgroundGray
-        optionsCellsBackgroundView.layer.cornerRadius = Self.cellCornerRadius
+        optionsCellsBackgroundView.layer.cornerRadius = Self.cornerRadius
         optionsCellsBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let line = DividerLineView()
-        line.translatesAutoresizingMaskIntoConstraints = false
-        optionsCellsBackgroundView.addSubview(line)
-        
+                
         let topLabel = UILabel()
         topLabel.text = "Категория"
         topLabel.translatesAutoresizingMaskIntoConstraints = false
         optionsCellsBackgroundView.addSubview(topLabel)
-        
-        let bottomLabel = UILabel()
-        bottomLabel.text = "Расписание"
-        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
-        optionsCellsBackgroundView.addSubview(bottomLabel)
         
         let chevronImage = UIImage(systemName: "chevron.right")
         let chevronImageView = UIImageView()
@@ -61,31 +55,61 @@ class NewHabbitScreenVC: UIViewController {
         chevronImageView.translatesAutoresizingMaskIntoConstraints = false
         optionsCellsBackgroundView.addSubview(chevronImageView)
         
-        let chevron2ImageView = UIImageView()
-        chevron2ImageView.image = chevronImage
-        chevron2ImageView.tintColor = .ypGray
-        chevron2ImageView.translatesAutoresizingMaskIntoConstraints = false
-        optionsCellsBackgroundView.addSubview(chevron2ImageView)
-        
         NSLayoutConstraint.activate([
-            optionsCellsBackgroundView.heightAnchor.constraint(equalToConstant: Self.cellHeight * 2),
-            line.heightAnchor.constraint(equalToConstant: 0.5),
-            line.bottomAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor,constant: -Self.cellHeight),
-            line.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: 16),
-            line.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -16),
-            
+            optionsCellsBackgroundView.heightAnchor.constraint(equalToConstant: isIrregularHabbit ? Self.cellHeight : Self.cellHeight * 2),
             topLabel.centerYAnchor.constraint(equalTo: optionsCellsBackgroundView.topAnchor, constant: Self.cellHeight / 2),
-            topLabel.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: 16),
+            topLabel.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: Self.padding),
             
-            bottomLabel.centerYAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor, constant: -(Self.cellHeight / 2)),
-            bottomLabel.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: 16),
-            chevronImageView.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -16),
+            chevronImageView.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -Self.padding),
             chevronImageView.centerYAnchor.constraint(equalTo: topLabel.centerYAnchor),
-            chevron2ImageView.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -16),
-            chevron2ImageView.centerYAnchor.constraint(equalTo: bottomLabel.centerYAnchor)
         ])
+        
+        if !isIrregularHabbit {
+            let line = DividerLineView()
+            line.translatesAutoresizingMaskIntoConstraints = false
+            optionsCellsBackgroundView.addSubview(line)
 
+            
+            let bottomLabel = UILabel()
+            bottomLabel.text = "Расписание"
+            bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+            optionsCellsBackgroundView.addSubview(bottomLabel)
+            
+            let chevron2ImageView = UIImageView()
+            chevron2ImageView.image = chevronImage
+            chevron2ImageView.tintColor = .ypGray
+            chevron2ImageView.translatesAutoresizingMaskIntoConstraints = false
+            optionsCellsBackgroundView.addSubview(chevron2ImageView)
+            
+            NSLayoutConstraint.activate([
+                line.heightAnchor.constraint(equalToConstant: 0.5),
+                line.bottomAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor,constant: -Self.cellHeight),
+                line.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: 16),
+                line.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -16),
+                bottomLabel.centerYAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor, constant: -(Self.cellHeight / 2)),
+                bottomLabel.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: Self.padding),
+                chevron2ImageView.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -Self.padding),
+                chevron2ImageView.centerYAnchor.constraint(equalTo: bottomLabel.centerYAnchor)
+            ])
+        }
+        
         return optionsCellsBackgroundView
+    }()
+    
+    private lazy var categoryButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(categoryButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var scheduleButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(scheduleButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
                 
     private lazy var cancelButton: UIButton = {
@@ -125,14 +149,15 @@ class NewHabbitScreenVC: UIViewController {
         view.addSubview(textFieldBackgroundView)
         view.addSubview(nameTextField)
         view.addSubview(optionsCellsBackgroundView)
+        view.addSubview(categoryButton)
         
         NSLayoutConstraint.activate([
-            textFieldBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            textFieldBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            textFieldBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Self.padding),
+            textFieldBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Self.padding),
             textFieldBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 84),
             
-            optionsCellsBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            optionsCellsBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            optionsCellsBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Self.padding),
+            optionsCellsBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Self.padding),
             optionsCellsBackgroundView.topAnchor.constraint(equalTo: textFieldBackgroundView.bottomAnchor, constant: 24),
             
             nameTextField.leadingAnchor.constraint(equalTo: textFieldBackgroundView.leadingAnchor, constant: 16),
@@ -143,18 +168,40 @@ class NewHabbitScreenVC: UIViewController {
             buttonHStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             buttonHStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
             buttonHStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            categoryButton.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor),
+            categoryButton.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor),
+            categoryButton.topAnchor.constraint(equalTo: optionsCellsBackgroundView.topAnchor),
+            categoryButton.heightAnchor.constraint(equalToConstant: Self.cellHeight)
         ])
+        
+        if !isIrregularHabbit {
+            view.addSubview(scheduleButton)
+            NSLayoutConstraint.activate([
+                scheduleButton.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor),
+                scheduleButton.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor),
+                scheduleButton.heightAnchor.constraint(equalToConstant: Self.cellHeight),
+                scheduleButton.bottomAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor),
+            ])
+        }
+        
     }
     
-    private func configureStyleFor(button: UIButton,
-                                   action: Selector) {
-        button.layer.cornerRadius = 16
-        button.clipsToBounds = true
-        button.addTarget(self, action: action, for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.heightAnchor.constraint(equalToConstant: 60)
-        ])
+    init(isIrregularHabbit: Bool) {
+        self.isIrregularHabbit = isIrregularHabbit
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        preconditionFailure("init(coder:) has not been implemented")
+    }
+    
+    @objc func categoryButtonTapped() {
+        
+    }
+    
+    @objc func scheduleButtonTapped() {
+        
     }
     
     @objc func cancelButtonTapped() {
@@ -168,8 +215,19 @@ class NewHabbitScreenVC: UIViewController {
         
     }
     
+    private func configureStyleFor(button: UIButton,
+                                   action: Selector) {
+        button.layer.cornerRadius = Self.cornerRadius
+        button.clipsToBounds = true
+        button.addTarget(self, action: action, for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+    
 }
 
 #Preview {
-    NewHabbitScreenVC()
+    NewHabbitScreenVC(isIrregularHabbit: false)
 }
