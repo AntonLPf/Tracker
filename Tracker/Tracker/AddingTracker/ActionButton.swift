@@ -8,7 +8,7 @@
 import UIKit
 
 class ActionButton: UIButton {
-    init(title: String, action: Selector, isActive: Bool = true) {
+    init(title: String, isActive: Bool = true) {
         super.init(frame: .zero)
         
         setTitle(title, for: .normal)
@@ -16,12 +16,10 @@ class ActionButton: UIButton {
         setIsActive(to: isActive)
         layer.cornerRadius = 16
         clipsToBounds = true
-        
-        addTarget(self, action: action, for: .touchUpInside)
-        
+                
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 60)
+            heightAnchor.constraint(equalToConstant: Constant.actionButtonHeight)
         ])
     }
     

@@ -13,4 +13,5 @@ struct Tracker: Identifiable {
     let color: String
     let icon: Character
     // расписание
+    let schedule: [WeekDay]
 }

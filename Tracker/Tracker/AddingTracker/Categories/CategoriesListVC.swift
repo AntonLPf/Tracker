@@ -9,24 +9,19 @@ import UIKit
 
 class CategoriesListVC: UIViewController {
     
-    private let addCategoryButton = ActionButton(title: "Добавить категорию", action: #selector(didTapaddCategoryButton))
+    private let addCategoryButton = ActionButton(title: "Добавить категорию")
         
     override func viewDidLoad() {
         setLogo(to: "Категории")
         
-        view.addSubviews([
-            addCategoryButton,
-        ])
+        addAndConstrainBottomBlock(addCategoryButton)
+        
+        addCategoryButton.addTarget(self, action: #selector(didTapaddCategoryButton), for: .touchUpInside)
         
         setPlaceholder(
             image: UIImage(resource: .trackersPlaceHolder),
             text: "Привычки и события можно объединить по смыслу")
         
-        NSLayoutConstraint.activate([
-            addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
-        ])
     }
     
     @objc func didTapaddCategoryButton() {

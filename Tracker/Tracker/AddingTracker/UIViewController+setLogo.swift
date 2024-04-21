@@ -23,7 +23,8 @@ extension UIViewController {
         
         NSLayoutConstraint.activate([
             logoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoLabel.heightAnchor.constraint(equalToConstant: 60)
+            logoLabel.heightAnchor.constraint(equalToConstant: Constant.logoHeight),
+            logoLabel.topAnchor.constraint(equalTo: view.topAnchor)
         ])
     }
     

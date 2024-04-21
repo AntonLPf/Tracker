@@ -18,6 +18,11 @@
 		3A7795012BD5412100281841 /* CategoriesListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795002BD5412100281841 /* CategoriesListVC.swift */; };
 		3A7795032BD5453900281841 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795022BD5453900281841 /* ActionButton.swift */; };
 		3A7795052BD54CA900281841 /* UIViewController+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795042BD54CA900281841 /* UIViewController+setPlaceholder.swift */; };
+		3A7795082BD553A400281841 /* AddCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795072BD553A400281841 /* AddCategoryVC.swift */; };
+		3A77950A2BD554A100281841 /* UIViewController+addAndConstrainBottomBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795092BD554A100281841 /* UIViewController+addAndConstrainBottomBlock.swift */; };
+		3A77950C2BD55B9400281841 /* ScheduleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77950B2BD55B9400281841 /* ScheduleVC.swift */; };
+		3A77950E2BD563B000281841 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77950D2BD563B000281841 /* Constant.swift */; };
+		3A7795112BD56E1900281841 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795102BD56E1900281841 /* WeekDay.swift */; };
 		3AAB14AA2BCA834C00DB144A /* CreateTrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */; };
 		3AAB14B02BCC3E8F00DB144A /* NewHabbitScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */; };
 		3AB272182BBF2A31009D54CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB272172BBF2A31009D54CC /* AppDelegate.swift */; };
@@ -43,6 +48,11 @@
 		3A7795002BD5412100281841 /* CategoriesListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesListVC.swift; sourceTree = "<group>"; };
 		3A7795022BD5453900281841 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		3A7795042BD54CA900281841 /* UIViewController+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+setPlaceholder.swift"; sourceTree = "<group>"; };
+		3A7795072BD553A400281841 /* AddCategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryVC.swift; sourceTree = "<group>"; };
+		3A7795092BD554A100281841 /* UIViewController+addAndConstrainBottomBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+addAndConstrainBottomBlock.swift"; sourceTree = "<group>"; };
+		3A77950B2BD55B9400281841 /* ScheduleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleVC.swift; sourceTree = "<group>"; };
+		3A77950D2BD563B000281841 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		3A7795102BD56E1900281841 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerVC.swift; sourceTree = "<group>"; };
 		3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabbitScreenVC.swift; sourceTree = "<group>"; };
 		3AB272142BBF2A31009D54CC /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +93,7 @@
 				3A28DF032BC458AB00915A60 /* Tracker.swift */,
 				3A28DF052BC4592900915A60 /* TrackerCategory.swift */,
 				3A28DF072BC4595E00915A60 /* TrackerRecord.swift */,
+				3A7795102BD56E1900281841 /* WeekDay.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -100,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				3A7795002BD5412100281841 /* CategoriesListVC.swift */,
+				3A7795072BD553A400281841 /* AddCategoryVC.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -109,11 +121,13 @@
 			children = (
 				3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */,
 				3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */,
-				3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */,
 				3A7794FE2BD525E400281841 /* DeviderLineView.swift */,
 				3A7795022BD5453900281841 /* ActionButton.swift */,
+				3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */,
 				3A7795042BD54CA900281841 /* UIViewController+setPlaceholder.swift */,
+				3A7795092BD554A100281841 /* UIViewController+addAndConstrainBottomBlock.swift */,
 				3A7795062BD552E500281841 /* Categories */,
+				3A77950B2BD55B9400281841 /* ScheduleVC.swift */,
 			);
 			path = AddingTracker;
 			sourceTree = "<group>";
@@ -148,6 +162,7 @@
 				3AB272202BBF2A32009D54CC /* Assets.xcassets */,
 				3AB272222BBF2A32009D54CC /* LaunchScreen.storyboard */,
 				3AB272252BBF2A32009D54CC /* Info.plist */,
+				3A77950D2BD563B000281841 /* Constant.swift */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -282,18 +297,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A7795012BD5412100281841 /* CategoriesListVC.swift in Sources */,
+				3A77950A2BD554A100281841 /* UIViewController+addAndConstrainBottomBlock.swift in Sources */,
 				3A28DF082BC4595E00915A60 /* TrackerRecord.swift in Sources */,
 				3A5C990C2BBF485700DE92F7 /* UIView+addingSubviews.swift in Sources */,
 				3A7795052BD54CA900281841 /* UIViewController+setPlaceholder.swift in Sources */,
 				3AAB14AA2BCA834C00DB144A /* CreateTrackerVC.swift in Sources */,
 				3AB2721C2BBF2A31009D54CC /* MainViewController.swift in Sources */,
 				3AB272182BBF2A31009D54CC /* AppDelegate.swift in Sources */,
+				3A77950C2BD55B9400281841 /* ScheduleVC.swift in Sources */,
 				3AB84CBB2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift in Sources */,
 				3A5C99072BBF3FFA00DE92F7 /* TrackersViewController.swift in Sources */,
+				3A77950E2BD563B000281841 /* Constant.swift in Sources */,
+				3A7795082BD553A400281841 /* AddCategoryVC.swift in Sources */,
 				3A7794FF2BD525E400281841 /* DeviderLineView.swift in Sources */,
 				3AB2721A2BBF2A31009D54CC /* SceneDelegate.swift in Sources */,
 				3A7795032BD5453900281841 /* ActionButton.swift in Sources */,
 				3AAB14B02BCC3E8F00DB144A /* NewHabbitScreenVC.swift in Sources */,
+				3A7795112BD56E1900281841 /* WeekDay.swift in Sources */,
 				3A28DF062BC4592900915A60 /* TrackerCategory.swift in Sources */,
 				3A28DF042BC458AB00915A60 /* Tracker.swift in Sources */,
 				3AB84CB92BC18CB600BF8B5A /* StatisticsNavViewController.swift in Sources */,
