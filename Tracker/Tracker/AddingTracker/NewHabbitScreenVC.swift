@@ -15,11 +15,21 @@ class NewHabbitScreenVC: UIViewController {
     
     private let isIrregularHabbit: Bool
     
+    private var isNameValid: Bool {
+        if let text = nameTextField.text {
+            return !text.isEmpty && text.count > 3
+        }
+        return false
+    }
+    
+    private var isFormValid: Bool {
+        isNameValid
+    }
+    
     private lazy var textFieldBackgroundView: UIView = {
         let textFieldBackgroundView = UIView()
         textFieldBackgroundView.backgroundColor = .ypBackgroundGray
         textFieldBackgroundView.layer.cornerRadius = Self.cornerRadius
-        textFieldBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             textFieldBackgroundView.heightAnchor.constraint(equalToConstant: Self.cellHeight)
@@ -32,7 +42,6 @@ class NewHabbitScreenVC: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Введите название трекера"
         textField.clearButtonMode = .whileEditing
-        textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
     }()
@@ -41,7 +50,6 @@ class NewHabbitScreenVC: UIViewController {
         let optionsCellsBackgroundView = UIView()
         optionsCellsBackgroundView.backgroundColor = .ypBackgroundGray
         optionsCellsBackgroundView.layer.cornerRadius = Self.cornerRadius
-        optionsCellsBackgroundView.translatesAutoresizingMaskIntoConstraints = false
                 
         let topLabel = UILabel()
         topLabel.text = "Категория"
@@ -100,7 +108,6 @@ class NewHabbitScreenVC: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(categoryButtonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -121,13 +128,7 @@ class NewHabbitScreenVC: UIViewController {
         return button
     }()
     
-    private lazy var createButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Создать", for: .normal)
-        button.backgroundColor = .ypBlack
-        button.tintColor = .white
-        return button
-    }()
+    private lazy var createButton = ActionButton(title: "Создать", action: #selector(createButtonTapped), isActive: isFormValid)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,12 +145,14 @@ class NewHabbitScreenVC: UIViewController {
         buttonHStack.addArrangedSubview(cancelButton)
         buttonHStack.addArrangedSubview(createButton)
         buttonHStack.translatesAutoresizingMaskIntoConstraints = false
-                
-        view.addSubview(buttonHStack)
-        view.addSubview(textFieldBackgroundView)
-        view.addSubview(nameTextField)
-        view.addSubview(optionsCellsBackgroundView)
-        view.addSubview(categoryButton)
+             
+        view.addSubviews([
+            textFieldBackgroundView,
+            nameTextField,
+            optionsCellsBackgroundView,
+            categoryButton,
+            buttonHStack,
+        ])
         
         NSLayoutConstraint.activate([
             textFieldBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Self.padding),

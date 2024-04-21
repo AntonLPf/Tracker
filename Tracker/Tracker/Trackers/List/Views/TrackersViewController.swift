@@ -27,13 +27,7 @@ class TrackersViewController: UIViewController {
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         return item
     }()
-        
-    private lazy var placeHolderView: UIView = {
-        let image = UIImage(resource: .trackersPlaceHolder)
-        let text = "Что будем отслеживать?"
-        return PlaceHolderView(image: image, text: text)
-    }()
-        
+                
     override func viewDidLoad() {
         super.viewDidLoad()
         setLargeTitle(to: "Трекеры")
@@ -41,15 +35,10 @@ class TrackersViewController: UIViewController {
         navigationItem.leftBarButtonItem = plusButtonView
         navigationItem.rightBarButtonItem = datePickerView
         
-        view.addSubviews([placeHolderView])
-        applyConstraints()
-    }
-    
-    private func applyConstraints() {
-        NSLayoutConstraint.activate([
-            placeHolderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            placeHolderView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
+        setPlaceholder(
+            image: UIImage(resource: .trackersPlaceHolder),
+            text: "Что будем отслеживать?")
+        
     }
     
     @objc private func didTapPlusButton(_ sender: Any) {

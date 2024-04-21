@@ -15,6 +15,9 @@
 		3A5C990C2BBF485700DE92F7 /* UIView+addingSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5C990B2BBF485700DE92F7 /* UIView+addingSubviews.swift */; };
 		3A7794FD2BD3BDB800281841 /* UIViewController+setLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */; };
 		3A7794FF2BD525E400281841 /* DeviderLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7794FE2BD525E400281841 /* DeviderLineView.swift */; };
+		3A7795012BD5412100281841 /* CategoriesListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795002BD5412100281841 /* CategoriesListVC.swift */; };
+		3A7795032BD5453900281841 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795022BD5453900281841 /* ActionButton.swift */; };
+		3A7795052BD54CA900281841 /* UIViewController+setPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7795042BD54CA900281841 /* UIViewController+setPlaceholder.swift */; };
 		3AAB14AA2BCA834C00DB144A /* CreateTrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */; };
 		3AAB14B02BCC3E8F00DB144A /* NewHabbitScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */; };
 		3AB272182BBF2A31009D54CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB272172BBF2A31009D54CC /* AppDelegate.swift */; };
@@ -37,6 +40,9 @@
 		3A5C990B2BBF485700DE92F7 /* UIView+addingSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+addingSubviews.swift"; sourceTree = "<group>"; };
 		3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+setLogo.swift"; sourceTree = "<group>"; };
 		3A7794FE2BD525E400281841 /* DeviderLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviderLineView.swift; sourceTree = "<group>"; };
+		3A7795002BD5412100281841 /* CategoriesListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesListVC.swift; sourceTree = "<group>"; };
+		3A7795022BD5453900281841 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		3A7795042BD54CA900281841 /* UIViewController+setPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+setPlaceholder.swift"; sourceTree = "<group>"; };
 		3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerVC.swift; sourceTree = "<group>"; };
 		3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabbitScreenVC.swift; sourceTree = "<group>"; };
 		3AB272142BBF2A31009D54CC /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +96,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		3A7795062BD552E500281841 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3A7795002BD5412100281841 /* CategoriesListVC.swift */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		3AAB14A82BCA80EE00DB144A /* AddingTracker */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +111,9 @@
 				3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */,
 				3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */,
 				3A7794FE2BD525E400281841 /* DeviderLineView.swift */,
+				3A7795022BD5453900281841 /* ActionButton.swift */,
+				3A7795042BD54CA900281841 /* UIViewController+setPlaceholder.swift */,
+				3A7795062BD552E500281841 /* Categories */,
 			);
 			path = AddingTracker;
 			sourceTree = "<group>";
@@ -264,8 +281,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A7795012BD5412100281841 /* CategoriesListVC.swift in Sources */,
 				3A28DF082BC4595E00915A60 /* TrackerRecord.swift in Sources */,
 				3A5C990C2BBF485700DE92F7 /* UIView+addingSubviews.swift in Sources */,
+				3A7795052BD54CA900281841 /* UIViewController+setPlaceholder.swift in Sources */,
 				3AAB14AA2BCA834C00DB144A /* CreateTrackerVC.swift in Sources */,
 				3AB2721C2BBF2A31009D54CC /* MainViewController.swift in Sources */,
 				3AB272182BBF2A31009D54CC /* AppDelegate.swift in Sources */,
@@ -273,6 +292,7 @@
 				3A5C99072BBF3FFA00DE92F7 /* TrackersViewController.swift in Sources */,
 				3A7794FF2BD525E400281841 /* DeviderLineView.swift in Sources */,
 				3AB2721A2BBF2A31009D54CC /* SceneDelegate.swift in Sources */,
+				3A7795032BD5453900281841 /* ActionButton.swift in Sources */,
 				3AAB14B02BCC3E8F00DB144A /* NewHabbitScreenVC.swift in Sources */,
 				3A28DF062BC4592900915A60 /* TrackerCategory.swift in Sources */,
 				3A28DF042BC458AB00915A60 /* Tracker.swift in Sources */,

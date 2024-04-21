@@ -9,25 +9,12 @@ import UIKit
 
 class StatViewController: UIViewController {
     
-    private lazy var placeHolderView: UIView = {
-        let image = UIImage(resource: .statisticsPlaceHolder)
-        let text = "Анализировать пока нечего"
-        return PlaceHolderView(image: image, text: text)
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setLargeTitle(to: "Статистика")
 
-        view.addSubviews([placeHolderView])
-        applyConstraints()
+        setPlaceholder(
+            image: UIImage(resource: .statisticsPlaceHolder),
+            text: "Анализировать пока нечего")
     }
-    
-    private func applyConstraints() {
-        NSLayoutConstraint.activate([
-            placeHolderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            placeHolderView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
-
 }

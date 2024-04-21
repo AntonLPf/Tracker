@@ -9,9 +9,9 @@ import UIKit
 
 class CreateTrackerVC: UIViewController {
         
-    private let habbitButton: UIButton = UIButton(type: .system)
+    private let habbitButton = ActionButton(title: "Привычка", action: #selector(didTapHabbitButton))
     
-    private let oneTimeEventButton: UIButton = UIButton(type: .system)
+    private let oneTimeEventButton = ActionButton(title: "Нерегулярное событие", action: #selector(didTapOneTimeEventButton))
     
     private let vStack: UIStackView = {
         let stack = UIStackView()
@@ -25,8 +25,6 @@ class CreateTrackerVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground  
         setLogo(to: "Создание трекера")
-        configure(button: habbitButton, title: "Привычка", action: #selector(didTapHabbitButton))
-        configure(button: oneTimeEventButton, title: "Нерегулярное событие", action: #selector(didTapOneTimeEventButton))
         vStack.addArrangedSubview(habbitButton)
         vStack.addArrangedSubview(oneTimeEventButton)
         view.addSubview(vStack)
@@ -40,22 +38,7 @@ class CreateTrackerVC: UIViewController {
             vStack.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-    
-    private func configure(button: UIButton, title: String, action: Selector) {
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .ypBlack
-        button.layer.cornerRadius = 16
-        button.clipsToBounds = true
         
-        button.addTarget(self, action: action, for: .touchUpInside)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.heightAnchor.constraint(equalToConstant: 60)
-        ])
-    }
-    
     @objc func didTapHabbitButton() {
         let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: false)
         newHabbitVC.modalPresentationStyle = .formSheet

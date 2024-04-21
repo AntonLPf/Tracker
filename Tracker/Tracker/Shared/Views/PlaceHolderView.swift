@@ -22,6 +22,8 @@ class PlaceHolderView: UIView {
     private lazy var placeHolderLabel: UILabel = {
         let label = UILabel()
         label.text = text
+        label.numberOfLines = 2
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
