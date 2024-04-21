@@ -14,6 +14,7 @@
 		3A5C99092BBF43F000DE92F7 /* StatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5C99082BBF43F000DE92F7 /* StatViewController.swift */; };
 		3A5C990C2BBF485700DE92F7 /* UIView+addingSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5C990B2BBF485700DE92F7 /* UIView+addingSubviews.swift */; };
 		3A7794FD2BD3BDB800281841 /* UIViewController+setLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */; };
+		3A7794FF2BD525E400281841 /* DeviderLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7794FE2BD525E400281841 /* DeviderLineView.swift */; };
 		3AAB14AA2BCA834C00DB144A /* CreateTrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */; };
 		3AAB14B02BCC3E8F00DB144A /* NewHabbitScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */; };
 		3AB272182BBF2A31009D54CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB272172BBF2A31009D54CC /* AppDelegate.swift */; };
@@ -35,6 +36,7 @@
 		3A5C99082BBF43F000DE92F7 /* StatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatViewController.swift; sourceTree = "<group>"; };
 		3A5C990B2BBF485700DE92F7 /* UIView+addingSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+addingSubviews.swift"; sourceTree = "<group>"; };
 		3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+setLogo.swift"; sourceTree = "<group>"; };
+		3A7794FE2BD525E400281841 /* DeviderLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviderLineView.swift; sourceTree = "<group>"; };
 		3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerVC.swift; sourceTree = "<group>"; };
 		3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabbitScreenVC.swift; sourceTree = "<group>"; };
 		3AB272142BBF2A31009D54CC /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +96,7 @@
 				3AAB14A92BCA834C00DB144A /* CreateTrackerVC.swift */,
 				3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */,
 				3A7794FC2BD3BDB800281841 /* UIViewController+setLogo.swift */,
+				3A7794FE2BD525E400281841 /* DeviderLineView.swift */,
 			);
 			path = AddingTracker;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				3AB272182BBF2A31009D54CC /* AppDelegate.swift in Sources */,
 				3AB84CBB2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift in Sources */,
 				3A5C99072BBF3FFA00DE92F7 /* TrackersViewController.swift in Sources */,
+				3A7794FF2BD525E400281841 /* DeviderLineView.swift in Sources */,
 				3AB2721A2BBF2A31009D54CC /* SceneDelegate.swift in Sources */,
 				3AAB14B02BCC3E8F00DB144A /* NewHabbitScreenVC.swift in Sources */,
 				3A28DF062BC4592900915A60 /* TrackerCategory.swift in Sources */,
