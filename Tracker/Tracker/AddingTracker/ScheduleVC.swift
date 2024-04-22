@@ -17,7 +17,7 @@ class ScheduleVC: UIViewController {
     
     private let doneButton = ActionButton(title: "Готово")
     
-    private let schedule: [WeekDay]
+    private var schedule: [WeekDay]
     
     private var switchStates: [Bool] = Array(repeating: false, count: 7)
     
@@ -45,6 +45,9 @@ class ScheduleVC: UIViewController {
     
     init(schedule: [WeekDay]) {
         self.schedule = schedule
+        for weekDayIndex in schedule.indices {
+            switchStates[weekDayIndex] = schedule[weekDayIndex].isChosen
+        }
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -53,6 +56,9 @@ class ScheduleVC: UIViewController {
     }
     
     @objc func didTapDoneButton() {
+        for weekdayIndex in schedule.indices {
+            schedule[weekdayIndex].isChosen = switchStates[weekdayIndex]
+        }
         delegate?.didDoneButtonPressed(schedule: schedule)
     }
 }
@@ -65,11 +71,12 @@ extension ScheduleVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = schedule[indexPath.row].name
+        cell.textLabel?.text = schedule[indexPath.row].name.fullDescription
         cell.backgroundColor = .ypBackgroundGray
         
         let toggle = UISwitch()
         toggle.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
+        toggle.isOn = schedule[indexPath.row].isChosen
         toggle.translatesAutoresizingMaskIntoConstraints = false
         cell.addSubview(toggle)
         
@@ -102,12 +109,12 @@ extension ScheduleVC: UITableViewDelegate {
 
 #Preview {
     ScheduleVC(schedule: [
-        WeekDay(name: "Понедельник", state: false),
-        WeekDay(name: "Вторник", state: false),
-        WeekDay(name: "Среда", state: false),
-        WeekDay(name: "Четверг", state: false),
-        WeekDay(name: "Пятница", state: false),
-        WeekDay(name: "Суббота", state: false),
-        WeekDay(name: "Воскресенье", state: false)
+        WeekDay(name: .monday, isChosen: false),
+        WeekDay(name: .tuesday, isChosen: false),
+        WeekDay(name: .wendsday, isChosen: false),
+        WeekDay(name: .thursday, isChosen: false),
+        WeekDay(name: .friday, isChosen: false),
+        WeekDay(name: .saturday, isChosen: false),
+        WeekDay(name: .sunday, isChosen: false)
     ])
 }

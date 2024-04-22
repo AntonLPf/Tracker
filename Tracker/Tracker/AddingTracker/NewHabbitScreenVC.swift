@@ -9,8 +9,16 @@ import UIKit
 
 class NewHabbitScreenVC: UIViewController {
     
-    var tracker = Tracker(id: UUID(), name: "", color: "", icon: Character(""), schedule: [])
-        
+    var schedule = [
+        WeekDay(name: .monday, isChosen: false),
+        WeekDay(name: .tuesday, isChosen: false),
+        WeekDay(name: .wendsday, isChosen: false),
+        WeekDay(name: .thursday, isChosen: false),
+        WeekDay(name: .friday, isChosen: false),
+        WeekDay(name: .saturday, isChosen: false),
+        WeekDay(name: .sunday, isChosen: false)
+    ]
+            
     private let isIrregularHabbit: Bool
     
     private var isNameValid: Bool {
@@ -40,8 +48,23 @@ class NewHabbitScreenVC: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Введите название трекера"
         textField.clearButtonMode = .whileEditing
-        
         return textField
+    }()
+    
+    private lazy var categoriesLabel: UILabel = {
+        let categoriesLabel = UILabel()
+        categoriesLabel.textColor = .ypGray
+        categoriesLabel.translatesAutoresizingMaskIntoConstraints = false
+        return categoriesLabel
+    }()
+    
+    private lazy var scheduleVStack = UIStackView()
+    
+    private lazy var weekDaysLabel: UILabel = {
+        let weekDaysLabel = UILabel()
+        weekDaysLabel.textColor = .ypGray
+        weekDaysLabel.translatesAutoresizingMaskIntoConstraints = false
+        return weekDaysLabel
     }()
     
     private lazy var optionsCellsBackgroundView: UIView = {
@@ -52,9 +75,19 @@ class NewHabbitScreenVC: UIViewController {
         let categoryLabel = UILabel()
         categoryLabel.text = "Категория"
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        optionsCellsBackgroundView.addSubview(categoryLabel)
         
+        let categoryVStack = UIStackView()
+        categoryVStack.axis = .vertical
+        categoryVStack.spacing = 2
+        categoryVStack.addArrangedSubview(categoryLabel)
+        if let text = categoriesLabel.text, !text.isEmpty {
+            categoryVStack.addArrangedSubview(categoriesLabel)
+        }
+        categoryVStack.translatesAutoresizingMaskIntoConstraints = false
+        optionsCellsBackgroundView.addSubview(categoryVStack)
+
         let chevronImage = UIImage(systemName: "chevron.right")
+        
         let chevronImageView = UIImageView()
         chevronImageView.image = chevronImage
         chevronImageView.tintColor = .ypGray
@@ -62,12 +95,15 @@ class NewHabbitScreenVC: UIViewController {
         optionsCellsBackgroundView.addSubview(chevronImageView)
         
         NSLayoutConstraint.activate([
+            chevronImageView.heightAnchor.constraint(equalToConstant: 20),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 12),
             optionsCellsBackgroundView.heightAnchor.constraint(equalToConstant: isIrregularHabbit ? Constant.cellHeihgt : Constant.cellHeihgt * 2),
-            categoryLabel.centerYAnchor.constraint(equalTo: optionsCellsBackgroundView.topAnchor, constant: Constant.cellHeihgt / 2),
-            categoryLabel.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: Constant.paddingValue),
+            categoryVStack.centerYAnchor.constraint(equalTo: optionsCellsBackgroundView.topAnchor, constant: Constant.cellHeihgt / 2),
+            categoryVStack.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: Constant.paddingValue),
+            categoryVStack.trailingAnchor.constraint(equalTo: chevronImageView.leadingAnchor),
             
             chevronImageView.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -Constant.paddingValue),
-            chevronImageView.centerYAnchor.constraint(equalTo: categoryLabel.centerYAnchor),
+            chevronImageView.centerYAnchor.constraint(equalTo: categoryVStack.centerYAnchor),
         ])
         
         if !isIrregularHabbit {
@@ -80,6 +116,15 @@ class NewHabbitScreenVC: UIViewController {
             scheduleLabel.translatesAutoresizingMaskIntoConstraints = false
             optionsCellsBackgroundView.addSubview(scheduleLabel)
             
+            scheduleVStack.axis = .vertical
+            scheduleVStack.spacing = 2
+            scheduleVStack.addArrangedSubview(scheduleLabel)
+            if let text = weekDaysLabel.text, !text.isEmpty {
+                scheduleVStack.addArrangedSubview(weekDaysLabel)
+            }
+            scheduleVStack.translatesAutoresizingMaskIntoConstraints = false
+            optionsCellsBackgroundView.addSubview(scheduleVStack)
+            
             let chevron2ImageView = UIImageView()
             chevron2ImageView.image = chevronImage
             chevron2ImageView.tintColor = .ypGray
@@ -91,8 +136,8 @@ class NewHabbitScreenVC: UIViewController {
                 line.bottomAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor,constant: -Constant.cellHeihgt),
                 line.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: Constant.paddingValue),
                 line.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -Constant.paddingValue),
-                scheduleLabel.centerYAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor, constant: -(Constant.cellHeihgt / 2)),
-                scheduleLabel.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: Constant.paddingValue),
+                scheduleVStack.centerYAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor, constant: -(Constant.cellHeihgt / 2)),
+                scheduleVStack.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor, constant: Constant.paddingValue),
                 chevron2ImageView.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor, constant: -Constant.paddingValue),
                 chevron2ImageView.centerYAnchor.constraint(equalTo: scheduleLabel.centerYAnchor)
             ])
@@ -201,15 +246,6 @@ class NewHabbitScreenVC: UIViewController {
     }
     
     @objc func scheduleButtonTapped() {
-        let schedule = [
-            WeekDay(name: "Понедельник", state: false),
-            WeekDay(name: "Вторник", state: false),
-            WeekDay(name: "Среда", state: false),
-            WeekDay(name: "Четверг", state: false),
-            WeekDay(name: "Пятница", state: false),
-            WeekDay(name: "Суббота", state: false),
-            WeekDay(name: "Воскресенье", state: false)
-        ]
         let vc = ScheduleVC(schedule: schedule)
         vc.delegate = self
         vc.modalPresentationStyle = .formSheet
@@ -239,12 +275,28 @@ class NewHabbitScreenVC: UIViewController {
     }
     
     private func updateTrackerSchedule(_ schedule: [WeekDay]) {
-        let newTracker = Tracker(id: tracker.id, 
-                                 name: tracker.name,
-                                 color: tracker.color,
-                                 icon: tracker.icon,
-                                 schedule: schedule)
-        tracker = newTracker
+        self.schedule = schedule
+        updateWeekDaysLabel()
+    }
+    
+    private func updateWeekDaysLabel() {
+        var weekDaysString = ""
+        for weekday in schedule {
+            if weekday.isChosen {
+                if !weekDaysString.isEmpty {
+                    weekDaysString.append(", ")
+                }
+                weekDaysString.append(weekday.name.shortDescription)
+            }
+        }
+        if !weekDaysString.isEmpty {
+            weekDaysLabel.text = weekDaysString
+            scheduleVStack.addArrangedSubview(weekDaysLabel)
+        } else if let lastLabel = scheduleVStack.arrangedSubviews.last {
+            scheduleVStack.removeArrangedSubview(lastLabel)
+            lastLabel.removeFromSuperview()
+        }
+        view.layoutIfNeeded()
     }
 }
 
