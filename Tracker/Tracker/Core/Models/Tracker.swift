@@ -10,7 +10,7 @@ import Foundation
 struct Tracker: Identifiable {
     let id: UUID
     let name: String
-    let color: String
+    let color: CategoryColor
     let icon: Character
     // расписание
 }

@@ -34,6 +34,7 @@
 		3AB84CB72BC1880500BF8B5A /* PlaceHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB84CB62BC1880500BF8B5A /* PlaceHolderView.swift */; };
 		3AB84CB92BC18CB600BF8B5A /* StatisticsNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB84CB82BC18CB600BF8B5A /* StatisticsNavViewController.swift */; };
 		3AB84CBB2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB84CBA2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift */; };
+		3ABECE122BDAF0EF00277092 /* CategoryColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABECE112BDAF0EF00277092 /* CategoryColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		3AB84CB62BC1880500BF8B5A /* PlaceHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderView.swift; sourceTree = "<group>"; };
 		3AB84CB82BC18CB600BF8B5A /* StatisticsNavViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsNavViewController.swift; sourceTree = "<group>"; };
 		3AB84CBA2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+settingTitle.swift"; sourceTree = "<group>"; };
+		3ABECE112BDAF0EF00277092 /* CategoryColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				3A28DF022BC458A200915A60 /* Models */,
+				3ABECE112BDAF0EF00277092 /* CategoryColors.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				3A28DF062BC4592900915A60 /* TrackerCategory.swift in Sources */,
 				3A28DF042BC458AB00915A60 /* Tracker.swift in Sources */,
 				3AB84CB92BC18CB600BF8B5A /* StatisticsNavViewController.swift in Sources */,
+				3ABECE122BDAF0EF00277092 /* CategoryColors.swift in Sources */,
 				3AB84CAE2BC142BE00BF8B5A /* TrackersNavViewController.swift in Sources */,
 				3A5C99092BBF43F000DE92F7 /* StatViewController.swift in Sources */,
 				3A7794FD2BD3BDB800281841 /* UIViewController+setLogo.swift in Sources */,
