@@ -9,8 +9,8 @@ import Foundation
 
 struct Tracker: Identifiable {
     let id: UUID
-    let name: String
-    let color: CategoryColor
-    let icon: Character
-    // расписание
+    var name: String
+    var color: CategoryColor
+    var icon: Character
+    var schedule: Set<WeekDay.WeekDayName>
 }

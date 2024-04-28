@@ -35,6 +35,10 @@
 		3AB84CB92BC18CB600BF8B5A /* StatisticsNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB84CB82BC18CB600BF8B5A /* StatisticsNavViewController.swift */; };
 		3AB84CBB2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB84CBA2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift */; };
 		3ABECE122BDAF0EF00277092 /* CategoryColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABECE112BDAF0EF00277092 /* CategoryColors.swift */; };
+		3AFC48F02BDDF10000037483 /* InMemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC48EF2BDDF10000037483 /* InMemoryStorage.swift */; };
+		3AFC48F32BDE03C000037483 /* TrackersStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC48F22BDE03C000037483 /* TrackersStorage.swift */; };
+		3AFC48F52BDE03E700037483 /* TrackerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC48F42BDE03E700037483 /* TrackerData.swift */; };
+		3AFC48F72BDE042300037483 /* StorageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC48F62BDE042300037483 /* StorageError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +72,10 @@
 		3AB84CB82BC18CB600BF8B5A /* StatisticsNavViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsNavViewController.swift; sourceTree = "<group>"; };
 		3AB84CBA2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+settingTitle.swift"; sourceTree = "<group>"; };
 		3ABECE112BDAF0EF00277092 /* CategoryColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryColors.swift; sourceTree = "<group>"; };
+		3AFC48EF2BDDF10000037483 /* InMemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryStorage.swift; sourceTree = "<group>"; };
+		3AFC48F22BDE03C000037483 /* TrackersStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersStorage.swift; sourceTree = "<group>"; };
+		3AFC48F42BDE03E700037483 /* TrackerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerData.swift; sourceTree = "<group>"; };
+		3AFC48F62BDE042300037483 /* StorageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +92,7 @@
 		3A28DF012BC4589600915A60 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				3AFC48F12BDE03A400037483 /* Storage */,
 				3A28DF022BC458A200915A60 /* Models */,
 				3ABECE112BDAF0EF00277092 /* CategoryColors.swift */,
 			);
@@ -229,6 +238,17 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		3AFC48F12BDE03A400037483 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				3AFC48F42BDE03E700037483 /* TrackerData.swift */,
+				3AFC48F22BDE03C000037483 /* TrackersStorage.swift */,
+				3AFC48F62BDE042300037483 /* StorageError.swift */,
+				3AFC48EF2BDDF10000037483 /* InMemoryStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -310,12 +330,16 @@
 				3A77950C2BD55B9400281841 /* ScheduleVC.swift in Sources */,
 				3AB84CBB2BC18D4E00BF8B5A /* UIViewController+settingTitle.swift in Sources */,
 				3A5C99072BBF3FFA00DE92F7 /* TrackersViewController.swift in Sources */,
+				3AFC48F02BDDF10000037483 /* InMemoryStorage.swift in Sources */,
 				3A77950E2BD563B000281841 /* Constant.swift in Sources */,
 				3A7795082BD553A400281841 /* AddCategoryVC.swift in Sources */,
 				3A7794FF2BD525E400281841 /* DeviderLineView.swift in Sources */,
 				3AB2721A2BBF2A31009D54CC /* SceneDelegate.swift in Sources */,
+				3AFC48F52BDE03E700037483 /* TrackerData.swift in Sources */,
+				3AFC48F32BDE03C000037483 /* TrackersStorage.swift in Sources */,
 				3A7795032BD5453900281841 /* ActionButton.swift in Sources */,
 				3AAB14B02BCC3E8F00DB144A /* NewHabbitScreenVC.swift in Sources */,
+				3AFC48F72BDE042300037483 /* StorageError.swift in Sources */,
 				3A7795112BD56E1900281841 /* WeekDay.swift in Sources */,
 				3A28DF062BC4592900915A60 /* TrackerCategory.swift in Sources */,
 				3A28DF042BC458AB00915A60 /* Tracker.swift in Sources */,

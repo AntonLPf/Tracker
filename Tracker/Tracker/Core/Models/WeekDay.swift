@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeekDay {
+struct WeekDay: Hashable {
     let name: WeekDayName
     var isChosen: Bool
     

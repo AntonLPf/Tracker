@@ -9,17 +9,11 @@ import UIKit
 
 final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
-    var categories: [TrackerCategory] = [
-        TrackerCategory(name: "Домашний уют", trackers: [
-            Tracker(id: UUID(), name: "Поливать растения", color: .color5, icon: "❤️"),
-        ]),
-        TrackerCategory(name: "Радостные мелочи", trackers: [
-            Tracker(id: UUID(), name: "Кошка заслонила камеру на созвоне", color: .color2, icon: "😻"),
-            Tracker(id: UUID(), name: "Бабушка прислала открытку в вотсапе", color: .color1, icon: "🌺")
-        ]),
-    ]
-    
+    let storage: TrackersStorage = InMemoryStorage()
+        
     var completedTrackers: [TrackerRecord] = []
+    
+    var currentDate = Date()
     
     private lazy var plusButtonView: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapPlusButton))
@@ -72,6 +66,8 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
+        currentDate = selectedDate
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         let formattedDate = dateFormatter.string(from: selectedDate)
@@ -79,6 +75,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     }
     
     private func updateView() {
+        let categories = storage.getTrackers()
         guard !categories.isEmpty else {
             setPlaceholder(
                 image: UIImage(resource: .trackersPlaceHolder),
@@ -107,7 +104,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
 extension TrackersViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        categories.count
+        storage.getTrackers().count
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -116,15 +113,18 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! HeaderView
+        let categories = storage.getTrackers()
         headerView.titleLabel.text = categories[indexPath.section].name
         return headerView
     }
         
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        categories[section].trackers.count
+        let categories = storage.getTrackers()
+        return categories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let categories = storage.getTrackers()
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TrackerCell
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         cell.update(tracker: tracker)

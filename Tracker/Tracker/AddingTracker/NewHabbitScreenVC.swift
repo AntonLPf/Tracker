@@ -54,6 +54,7 @@ class NewHabbitScreenVC: UIViewController {
     private lazy var categoriesLabel: UILabel = {
         let categoriesLabel = UILabel()
         categoriesLabel.textColor = .ypGray
+        categoriesLabel.text = "Домашний уют"
         categoriesLabel.translatesAutoresizingMaskIntoConstraints = false
         return categoriesLabel
     }()
@@ -281,6 +282,20 @@ class NewHabbitScreenVC: UIViewController {
     
     private func updateWeekDaysLabel() {
         var weekDaysString = ""
+        var isEveryDay = true
+        
+        for weekDay in schedule {
+            if !weekDay.isChosen {
+                isEveryDay = false
+                break
+            }
+        }
+        
+        guard !isEveryDay else {
+            weekDaysLabel.text = "Каждый день"
+            return
+        }
+        
         for weekday in schedule {
             if weekday.isChosen {
                 if !weekDaysString.isEmpty {

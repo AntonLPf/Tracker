@@ -21,18 +21,22 @@ class ScheduleVC: UIViewController {
     
     private var switchStates: [Bool] = Array(repeating: false, count: 7)
     
-    let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = .white
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
         
     override func viewDidLoad() {
         view.backgroundColor = .white
         setLogo(to: "Расписание")
         addAndConstrainBottomBlock(doneButton)
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.backgroundColor = .white
         view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -99,7 +103,7 @@ extension ScheduleVC: UITableViewDataSource {
 
 extension ScheduleVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
@@ -109,12 +113,12 @@ extension ScheduleVC: UITableViewDelegate {
 
 #Preview {
     ScheduleVC(schedule: [
-        WeekDay(name: .monday, isChosen: false),
-        WeekDay(name: .tuesday, isChosen: false),
-        WeekDay(name: .wendsday, isChosen: false),
-        WeekDay(name: .thursday, isChosen: false),
-        WeekDay(name: .friday, isChosen: false),
-        WeekDay(name: .saturday, isChosen: false),
-        WeekDay(name: .sunday, isChosen: false)
+        WeekDay(name: .monday, isChosen: true),
+        WeekDay(name: .tuesday, isChosen: true),
+        WeekDay(name: .wendsday, isChosen: true),
+        WeekDay(name: .thursday, isChosen: true),
+        WeekDay(name: .friday, isChosen: true),
+        WeekDay(name: .saturday, isChosen: true),
+        WeekDay(name: .sunday, isChosen: true)
     ])
 }
