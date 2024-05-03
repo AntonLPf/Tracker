@@ -9,7 +9,7 @@ import UIKit
 
 class NewHabbitScreenVC: UIViewController {
     
-    var schedule = [
+    private var schedule = [
         WeekDay(name: .monday, isChosen: false),
         WeekDay(name: .tuesday, isChosen: false),
         WeekDay(name: .wendsday, isChosen: false),
@@ -17,6 +17,12 @@ class NewHabbitScreenVC: UIViewController {
         WeekDay(name: .friday, isChosen: false),
         WeekDay(name: .saturday, isChosen: false),
         WeekDay(name: .sunday, isChosen: false)
+    ]
+    
+    private let emojies: [Character] = [
+        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
+        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
+        "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
     ]
             
     private let isIrregularHabbit: Bool
@@ -173,16 +179,28 @@ class NewHabbitScreenVC: UIViewController {
     
     private let createButton = ActionButton(title: "Создать")
     
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: SixColumnFlowLayout()
+        )
+        collectionView.register(EmojyCell.self, forCellWithReuseIdentifier: EmojyCell.reuseIdentifier)
+        collectionView.register(TrackerOptionsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerOptionsHeaderView.reuseIdentifier)
+        return collectionView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setLogo(to: "Новая привычка")
+
+        collectionView.dataSource = self
+        collectionView.delegate = self
         
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         createButton.setIsActive(to: isFormValid)
         
         configureStyleFor(button: cancelButton, action: #selector(cancelButtonTapped))
-        
         configureStyleFor(button: createButton, action: #selector(createButtonTapped))
         
         let buttonHStack = UIStackView()
@@ -198,6 +216,7 @@ class NewHabbitScreenVC: UIViewController {
             nameTextField,
             optionsCellsBackgroundView,
             categoryButton,
+            collectionView
         ])
         
         addAndConstrainBottomBlock(buttonHStack)
@@ -218,7 +237,12 @@ class NewHabbitScreenVC: UIViewController {
             categoryButton.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor),
             categoryButton.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor),
             categoryButton.topAnchor.constraint(equalTo: optionsCellsBackgroundView.topAnchor),
-            categoryButton.heightAnchor.constraint(equalToConstant: Constant.cellHeihgt)
+            categoryButton.heightAnchor.constraint(equalToConstant: Constant.cellHeihgt),
+            
+            collectionView.topAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constant.paddingValue),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constant.paddingValue),
+            collectionView.bottomAnchor.constraint(equalTo: buttonHStack.topAnchor, constant: -Constant.paddingValue)
         ])
         
         if !isIrregularHabbit {
@@ -321,6 +345,39 @@ extension NewHabbitScreenVC: ScheduleVCDelegate {
         if let firstvc = presentationController?.presentedViewController {
             firstvc.dismiss(animated: true)
         }
+    }
+}
+
+extension NewHabbitScreenVC: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
+        }
+        
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TrackerOptionsHeaderView.reuseIdentifier, for: indexPath) as! TrackerOptionsHeaderView
+        return headerView
+    }
+        
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        emojies.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let emoji = emojies[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojyCell.reuseIdentifier, for: indexPath) as! EmojyCell
+        cell.setEmojy(emoji)
+        return cell
+    }
+}
+
+extension NewHabbitScreenVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        CGSize(width: collectionView.bounds.width, height: 50)
     }
 }
 
