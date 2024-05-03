@@ -9,9 +9,13 @@ import UIKit
 
 class CreateTrackerVC: UIViewController {
         
-    private let habbitButton = ActionButton(title: "Привычка")
+    private lazy var habbitButton: UIButton =  {
+        ActionButton(title: "Привычка", action: #selector(didTapHabbitButton), target: self)
+    }()
     
-    private let oneTimeEventButton = ActionButton(title: "Нерегулярное событие")
+    private lazy var oneTimeEventButton: UIButton =  {
+        ActionButton(title: "Нерегулярное событие", action: #selector(didTapOneTimeEventButton), target: self)
+    }()
     
     private let vStack: UIStackView = {
         let stack = UIStackView()
@@ -28,9 +32,6 @@ class CreateTrackerVC: UIViewController {
         vStack.addArrangedSubview(habbitButton)
         vStack.addArrangedSubview(oneTimeEventButton)
         view.addSubview(vStack)
-        
-        habbitButton.addTarget(self, action: #selector(didTapHabbitButton), for: .touchUpInside)
-        oneTimeEventButton.addTarget(self, action: #selector(didTapOneTimeEventButton), for: .touchUpInside)
         
         applyConstraints()
     }

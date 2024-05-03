@@ -169,15 +169,22 @@ class NewHabbitScreenVC: UIViewController {
     }()
                 
     private lazy var cancelButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Отмена", for: .normal)
+        let button = ActionButton(title: "Отмена", 
+                                  isActive: true,
+                                  action: #selector(cancelButtonTapped),
+                                  target: self)
+        button.backgroundColor = .white
         button.setTitleColor(.red, for: .normal)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.red.cgColor
         return button
     }()
     
-    private let createButton = ActionButton(title: "Создать")
+    private lazy var createButton: UIButton = {
+        let button = ActionButton(title: "Создать", action: #selector(createButtonTapped), target: self)
+        button.setIsActive(to: isFormValid)
+        return button
+    }()
     
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -196,13 +203,7 @@ class NewHabbitScreenVC: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
-        
-        createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
-        createButton.setIsActive(to: isFormValid)
-        
-        configureStyleFor(button: cancelButton, action: #selector(cancelButtonTapped))
-        configureStyleFor(button: createButton, action: #selector(createButtonTapped))
-        
+                        
         let buttonHStack = UIStackView()
         buttonHStack.axis = .horizontal
         buttonHStack.spacing = 8
@@ -287,18 +288,7 @@ class NewHabbitScreenVC: UIViewController {
     @objc func createButtonTapped() {
         
     }
-    
-    private func configureStyleFor(button: UIButton,
-                                   action: Selector) {
-        button.layer.cornerRadius = Constant.cornerRadius
-        button.clipsToBounds = true
-        button.addTarget(self, action: action, for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.heightAnchor.constraint(equalToConstant: Constant.logoHeight)
-        ])
-    }
-    
+        
     private func updateTrackerSchedule(_ schedule: [WeekDay]) {
         self.schedule = schedule
         updateWeekDaysLabel()

@@ -9,15 +9,15 @@ import UIKit
 
 class CategoriesListVC: UIViewController {
     
-    private let addCategoryButton = ActionButton(title: "Добавить категорию")
+    private lazy var addCategoryButton: UIButton = {
+        ActionButton(title: "Добавить категорию", action: #selector(didTapaddCategoryButton), target: self)
+    }()
         
     override func viewDidLoad() {
         setLogo(to: "Категории")
         
         addAndConstrainBottomBlock(addCategoryButton)
-        
-        addCategoryButton.addTarget(self, action: #selector(didTapaddCategoryButton), for: .touchUpInside)
-        
+                
         setPlaceholder(
             image: UIImage(resource: .trackersPlaceHolder),
             text: "Привычки и события можно объединить по смыслу")

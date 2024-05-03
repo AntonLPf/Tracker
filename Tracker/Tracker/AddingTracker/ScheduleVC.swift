@@ -15,7 +15,9 @@ class ScheduleVC: UIViewController {
     
     var delegate: ScheduleVCDelegate? = nil
     
-    private let doneButton = ActionButton(title: "Готово")
+    private lazy var doneButton: UIButton = {
+        ActionButton(title: "Готово", action: #selector(didTapDoneButton), target: self)
+    }()
     
     private var schedule: [WeekDay]
     
@@ -36,8 +38,6 @@ class ScheduleVC: UIViewController {
         setLogo(to: "Расписание")
         addAndConstrainBottomBlock(doneButton)
         view.addSubview(tableView)
-
-        doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.logoHeight),

@@ -9,8 +9,9 @@ import UIKit
 
 class AddCategoryVC: UIViewController {
     
-    private let addCategoryButton = ActionButton(
-        title: "Готово")
+    private lazy var addCategoryButton: ActionButton = {
+        ActionButton(title: "Готово", action: #selector(didTapDoneButton), target: self)
+    }()
     
     private var isValid: Bool {
         false
@@ -18,9 +19,7 @@ class AddCategoryVC: UIViewController {
     
     override func viewDidLoad() {
         setLogo(to: "Новая категория")
-        
-        addCategoryButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
-        
+                
         let textField = UITextField(frame: CGRect(x: 50, y: 100, width: 200, height: 40))
         textField.borderStyle = .roundedRect
         textField.layer.cornerRadius = 16
