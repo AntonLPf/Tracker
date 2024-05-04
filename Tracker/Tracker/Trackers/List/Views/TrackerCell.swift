@@ -11,30 +11,31 @@ final class TrackerCell: UICollectionViewCell {
     
     static let buttonRadius: CGFloat = 34
         
-    private let backgroundColoredView: UIView = {
+    private lazy var backgroundColoredView: UIView = {
         let coloredView = UIView()
         coloredView.backgroundColor = .red
         coloredView.layer.cornerRadius = Constant.cornerRadius
         return coloredView
     }()
     
-    private let plusButton: UIButton = {
+    private lazy var plusButton: UIButton = {
         let button = UIButton(type: .custom)
         button.backgroundColor = .red
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = TrackerCell.buttonRadius / 2
         button.clipsToBounds = true
+        button.addTarget(self, action: #selector(plussButtonPressed), for: .touchUpInside)
         return button
     }()
     
-    private let countLabel: UILabel = {
+    private lazy var countLabel: UILabel = {
         let label = UILabel()
         label.text = "1 день"
         return label
     }()
     
-    private let nameTextView: UITextView = {
+    private lazy var nameTextView: UITextView = {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 12)
         textView.text = "Поливать растения"
@@ -48,7 +49,7 @@ final class TrackerCell: UICollectionViewCell {
         return textView
     }()
     
-    private let emogiView = EmojiView()
+    private lazy var emogiView = EmojiView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -75,10 +76,10 @@ final class TrackerCell: UICollectionViewCell {
             countLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             countLabel.centerYAnchor.constraint(equalTo: plusButton.centerYAnchor),
             
-            nameTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 44),
-            nameTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            nameTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            nameTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+            nameTextView.topAnchor.constraint(equalTo: backgroundColoredView.topAnchor, constant: 44),
+            nameTextView.leadingAnchor.constraint(equalTo: backgroundColoredView.leadingAnchor, constant: 12),
+            nameTextView.trailingAnchor.constraint(equalTo: backgroundColoredView.trailingAnchor, constant: -12),
+            nameTextView.bottomAnchor.constraint(equalTo: backgroundColoredView.bottomAnchor),
         ])
     }
     
@@ -91,5 +92,9 @@ final class TrackerCell: UICollectionViewCell {
         backgroundColoredView.backgroundColor = tracker.color.uiColor
         plusButton.backgroundColor = tracker.color.uiColor
         emogiView.setEmoji(tracker.icon)
+    }
+    
+    @objc func plussButtonPressed() {
+        
     }
 }
