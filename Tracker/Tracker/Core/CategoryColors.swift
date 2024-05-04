@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum CategoryColor {
+enum CategoryColor: CaseIterable {
     case color1
     case color2
     case color3

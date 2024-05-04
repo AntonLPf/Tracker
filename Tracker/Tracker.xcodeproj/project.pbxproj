@@ -15,6 +15,7 @@
 		3A375F722BE548E000DC8DA8 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A375F712BE548E000DC8DA8 /* HeaderView.swift */; };
 		3A375F742BE548F300DC8DA8 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A375F732BE548F300DC8DA8 /* TrackerCell.swift */; };
 		3A375F762BE5491600DC8DA8 /* TrackerOptionsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A375F752BE5491600DC8DA8 /* TrackerOptionsHeaderView.swift */; };
+		3A375F782BE557CF00DC8DA8 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A375F772BE557CF00DC8DA8 /* ColorCell.swift */; };
 		3A5C99072BBF3FFA00DE92F7 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5C99062BBF3FFA00DE92F7 /* TrackersViewController.swift */; };
 		3A5C99092BBF43F000DE92F7 /* StatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5C99082BBF43F000DE92F7 /* StatViewController.swift */; };
 		3A5C990C2BBF485700DE92F7 /* UIView+addingSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5C990B2BBF485700DE92F7 /* UIView+addingSubviews.swift */; };
@@ -57,6 +58,7 @@
 		3A375F712BE548E000DC8DA8 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		3A375F732BE548F300DC8DA8 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		3A375F752BE5491600DC8DA8 /* TrackerOptionsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerOptionsHeaderView.swift; sourceTree = "<group>"; };
+		3A375F772BE557CF00DC8DA8 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		3A5C99062BBF3FFA00DE92F7 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
 		3A5C99082BBF43F000DE92F7 /* StatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatViewController.swift; sourceTree = "<group>"; };
 		3A5C990B2BBF485700DE92F7 /* UIView+addingSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+addingSubviews.swift"; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				3AAB14AF2BCC3E8F00DB144A /* NewHabbitScreenVC.swift */,
 				3AFC48FB2BE2BFAC00037483 /* SixColumnFlowLayout.swift */,
 				3AFC48F82BE2BE6100037483 /* EmojyCell.swift */,
+				3A375F772BE557CF00DC8DA8 /* ColorCell.swift */,
 				3A375F752BE5491600DC8DA8 /* TrackerOptionsHeaderView.swift */,
 				3A7795062BD552E500281841 /* Categories */,
 			);
@@ -367,6 +370,7 @@
 				3A77950E2BD563B000281841 /* Constant.swift in Sources */,
 				3A7795082BD553A400281841 /* AddCategoryVC.swift in Sources */,
 				3A7794FF2BD525E400281841 /* DeviderLineView.swift in Sources */,
+				3A375F782BE557CF00DC8DA8 /* ColorCell.swift in Sources */,
 				3AB2721A2BBF2A31009D54CC /* SceneDelegate.swift in Sources */,
 				3AFC48F52BDE03E700037483 /* TrackerData.swift in Sources */,
 				3A375F722BE548E000DC8DA8 /* HeaderView.swift in Sources */,

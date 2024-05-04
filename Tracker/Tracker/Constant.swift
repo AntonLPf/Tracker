@@ -14,4 +14,6 @@ struct Constant {
     static let cellHeihgt: CGFloat = 75
     static let paddingValue: CGFloat = 16
     static let cornerRadius: CGFloat = 16
+    
+    static let collectionHeaderHeight: CGFloat = 50
 }

@@ -11,14 +11,13 @@ final class TrackerOptionsHeaderView: UICollectionReusableView {
     
     static let reuseIdentifier = "TrackerOptionsHeaderView"
     
-    let titleLabel = UILabel()
+    private var titleLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         titleLabel.textColor = .black
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        titleLabel.text = "Emoji"
         addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -32,5 +31,9 @@ final class TrackerOptionsHeaderView: UICollectionReusableView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setTitle(to string: String) {
+        titleLabel.text = string
     }
 }

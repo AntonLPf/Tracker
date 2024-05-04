@@ -8,7 +8,7 @@
 import UIKit
 
 class NewHabbitScreenVC: UIViewController {
-    
+        
     private var schedule = [
         WeekDay(name: .monday, isChosen: false),
         WeekDay(name: .tuesday, isChosen: false),
@@ -24,6 +24,19 @@ class NewHabbitScreenVC: UIViewController {
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
         "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
     ]
+    
+    private let categoryColors = CategoryColor.allCases
+    
+    private var selectedEmojiIndexPath = IndexPath(item: 0, section: 0)
+    private var selectedColorIndexPath = IndexPath(item: 0, section: 1)
+    
+    private var selectedEmojy: Character {
+        emojies[selectedEmojiIndexPath.row]
+    }
+    
+    private var selectedColor: CategoryColor {
+        categoryColors[selectedColorIndexPath.row]
+    }
             
     private let isIrregularHabbit: Bool
     
@@ -169,8 +182,7 @@ class NewHabbitScreenVC: UIViewController {
     }()
                 
     private lazy var cancelButton: UIButton = {
-        let button = ActionButton(title: "Отмена", 
-                                  isActive: true,
+        let button = ActionButton(title: "Отмена",
                                   action: #selector(cancelButtonTapped),
                                   target: self)
         button.backgroundColor = .white
@@ -180,7 +192,7 @@ class NewHabbitScreenVC: UIViewController {
         return button
     }()
     
-    private lazy var createButton: UIButton = {
+    private lazy var createButton: ActionButton = {
         let button = ActionButton(title: "Создать", action: #selector(createButtonTapped), target: self)
         button.setIsActive(to: isFormValid)
         return button
@@ -193,7 +205,45 @@ class NewHabbitScreenVC: UIViewController {
         )
         collectionView.register(EmojyCell.self, forCellWithReuseIdentifier: EmojyCell.reuseIdentifier)
         collectionView.register(TrackerOptionsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerOptionsHeaderView.reuseIdentifier)
+        collectionView.register(ColorCell.self, forCellWithReuseIdentifier: ColorCell.reuseIdentifier)
+        collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .clear
         return collectionView
+    }()
+    
+    private lazy var buttonHStack: UIStackView = {
+        let buttonHStack = UIStackView()
+        buttonHStack.axis = .horizontal
+        buttonHStack.spacing = 8
+        buttonHStack.distribution = .fillEqually
+        buttonHStack.addArrangedSubview(cancelButton)
+        buttonHStack.addArrangedSubview(createButton)
+        buttonHStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        return buttonHStack
+    }()
+    
+    private lazy var mainVstack: UIStackView = {
+        let vStack = UIStackView()
+        vStack.axis = .vertical
+        vStack.spacing = Constant.rowSpaceValue
+        vStack.distribution = .fill
+        vStack.addArrangedSubview(textFieldBackgroundView)
+        vStack.addArrangedSubview(optionsCellsBackgroundView)
+        vStack.addArrangedSubview(categoryButton)
+        vStack.addArrangedSubview(collectionView)
+        vStack.addArrangedSubview(buttonHStack)
+        return vStack
+    }()
+    
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        
+        scrollView.addSubviews([
+            mainVstack
+        ])
+        
+        return scrollView
     }()
     
     override func viewDidLoad() {
@@ -203,51 +253,35 @@ class NewHabbitScreenVC: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
-                        
-        let buttonHStack = UIStackView()
-        buttonHStack.axis = .horizontal
-        buttonHStack.spacing = 8
-        buttonHStack.distribution = .fillEqually
-        buttonHStack.addArrangedSubview(cancelButton)
-        buttonHStack.addArrangedSubview(createButton)
-        buttonHStack.translatesAutoresizingMaskIntoConstraints = false
-             
-        view.addSubviews([
-            textFieldBackgroundView,
-            nameTextField,
-            optionsCellsBackgroundView,
-            categoryButton,
-            collectionView
+        
+        textFieldBackgroundView.addSubviews([
+            nameTextField
         ])
         
-        addAndConstrainBottomBlock(buttonHStack)
-        
+        view.addSubviews([
+            scrollView
+        ])
+                
         NSLayoutConstraint.activate([
-            textFieldBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constant.paddingValue),
-            textFieldBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constant.paddingValue),
-            textFieldBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.logoHeight + Constant.rowSpaceValue),
-            
-            optionsCellsBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constant.paddingValue),
-            optionsCellsBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constant.paddingValue),
-            optionsCellsBackgroundView.topAnchor.constraint(equalTo: textFieldBackgroundView.bottomAnchor, constant: Constant.rowSpaceValue),
-            
+            nameTextField.centerYAnchor.constraint(equalTo: textFieldBackgroundView.centerYAnchor),
             nameTextField.leadingAnchor.constraint(equalTo: textFieldBackgroundView.leadingAnchor, constant: Constant.paddingValue),
             nameTextField.trailingAnchor.constraint(equalTo: textFieldBackgroundView.trailingAnchor, constant: -Constant.paddingValue),
-            nameTextField.centerYAnchor.constraint(equalTo: textFieldBackgroundView.centerYAnchor),
-                                    
-            categoryButton.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor),
-            categoryButton.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor),
-            categoryButton.topAnchor.constraint(equalTo: optionsCellsBackgroundView.topAnchor),
-            categoryButton.heightAnchor.constraint(equalToConstant: Constant.cellHeihgt),
             
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.logoHeight + Constant.rowSpaceValue),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constant.paddingValue),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constant.paddingValue),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constant.paddingValue),
+            
+            mainVstack.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            mainVstack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constant.paddingValue),
+            mainVstack.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            mainVstack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+
             collectionView.topAnchor.constraint(equalTo: optionsCellsBackgroundView.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constant.paddingValue),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constant.paddingValue),
-            collectionView.bottomAnchor.constraint(equalTo: buttonHStack.topAnchor, constant: -Constant.paddingValue)
         ])
         
         if !isIrregularHabbit {
-            view.addSubview(scheduleButton)
+            scrollView.addSubview(scheduleButton)
             NSLayoutConstraint.activate([
                 scheduleButton.leadingAnchor.constraint(equalTo: optionsCellsBackgroundView.leadingAnchor),
                 scheduleButton.trailingAnchor.constraint(equalTo: optionsCellsBackgroundView.trailingAnchor),
@@ -256,6 +290,13 @@ class NewHabbitScreenVC: UIViewController {
             ])
         }
         
+        collectionView.layoutIfNeeded()
+        let totalCollectionHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        NSLayoutConstraint.activate([
+            collectionView.heightAnchor.constraint(equalToConstant: totalCollectionHeight)
+        ])
+        
+        scrollView.contentSize = mainVstack.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
     
     init(isIrregularHabbit: Bool) {
@@ -288,7 +329,7 @@ class NewHabbitScreenVC: UIViewController {
     @objc func createButtonTapped() {
         
     }
-        
+    
     private func updateTrackerSchedule(_ schedule: [WeekDay]) {
         self.schedule = schedule
         updateWeekDaysLabel()
@@ -327,7 +368,12 @@ class NewHabbitScreenVC: UIViewController {
         }
         view.layoutIfNeeded()
     }
+    
+    private func updateCreateButtonState() {
+        createButton.setIsActive(to: isFormValid)
+    }
 }
+
 
 extension NewHabbitScreenVC: ScheduleVCDelegate {
     func didDoneButtonPressed(schedule: [WeekDay]) {
@@ -341,7 +387,7 @@ extension NewHabbitScreenVC: ScheduleVCDelegate {
 extension NewHabbitScreenVC: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
+        2
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -350,24 +396,64 @@ extension NewHabbitScreenVC: UICollectionViewDataSource {
         }
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TrackerOptionsHeaderView.reuseIdentifier, for: indexPath) as! TrackerOptionsHeaderView
+        
+        if indexPath.section == 0 {
+            headerView.setTitle(to: "Emoji")
+        } else {
+            headerView.setTitle(to: "Цвет")
+        }
         return headerView
     }
         
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        emojies.count
+        18
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let emoji = emojies[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojyCell.reuseIdentifier, for: indexPath) as! EmojyCell
-        cell.setEmojy(emoji)
-        return cell
+        if indexPath.section == 0 {
+            let emoji = emojies[indexPath.row]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojyCell.reuseIdentifier, for: indexPath) as! EmojyCell
+            cell.setEmoji(to: emoji)
+            cell.setSelection(indexPath == selectedEmojiIndexPath)
+            return cell
+        } else {
+            let color = categoryColors[indexPath.row]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.reuseIdentifier, for: indexPath) as! ColorCell
+            cell.setColor(to: color)
+            cell.setSelection(indexPath == selectedColorIndexPath)
+            return cell
+        }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            guard indexPath != selectedEmojiIndexPath else { return }
+            
+            let cellToDeselect = collectionView.cellForItem(at: selectedEmojiIndexPath) as? EmojyCell
+            cellToDeselect?.setSelection(false)
+            
+            selectedEmojiIndexPath = indexPath
+            
+            let cell = collectionView.cellForItem(at: indexPath) as? EmojyCell
+            cell?.setSelection(true)
+        } else {
+            guard indexPath != selectedColorIndexPath else { return }
+            
+            let cellToDeselect = collectionView.cellForItem(at: selectedColorIndexPath) as? ColorCell
+            cellToDeselect?.setSelection(false)
+            
+            selectedColorIndexPath = indexPath
+            
+            let cell = collectionView.cellForItem(at: indexPath) as? ColorCell
+            cell?.setSelection(true)
+        }
+    }
+    
 }
 
 extension NewHabbitScreenVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        CGSize(width: collectionView.bounds.width, height: 50)
+        CGSize(width: collectionView.bounds.width, height: Constant.collectionHeaderHeight)
     }
 }
 

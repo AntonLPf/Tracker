@@ -10,7 +10,7 @@ import UIKit
 final class EmojyCell: UICollectionViewCell {
     
     static let reuseIdentifier = "EmojyCell"
-        
+            
     private lazy var emojiLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 32)
@@ -23,6 +23,11 @@ final class EmojyCell: UICollectionViewCell {
             emojiLabel
         ])
         
+        layer.cornerRadius = 8
+        layer.masksToBounds = true
+        
+        setSelection(isSelected)
+        
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
@@ -33,7 +38,16 @@ final class EmojyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setEmojy(_ char: Character) {
+    func setEmoji(to char: Character) {
         emojiLabel.text = String(char)
+    }
+    
+    func getEmoji() -> Character {
+        Character(emojiLabel.text ?? "")
+    }
+    
+    func setSelection(_ selected: Bool) {
+        isSelected = selected
+        backgroundColor = selected ? .ypBackgroundGrayPure : .clear
     }
 }
