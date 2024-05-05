@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol CreateTrackerDelegate {
+    func createNewTracker(trackerData: TrackerData)
+}
+
 class CreateTrackerVC: UIViewController {
+    
+    var delegate: CreateTrackerDelegate? = nil
         
     private lazy var habbitButton: UIButton =  {
         ActionButton(title: "Привычка", action: #selector(didTapHabbitButton), target: self)
@@ -47,13 +53,22 @@ class CreateTrackerVC: UIViewController {
     @objc func didTapHabbitButton() {
         let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: false)
         newHabbitVC.modalPresentationStyle = .formSheet
+        newHabbitVC.delegate = self
         present(newHabbitVC, animated: true, completion: nil)
     }
     
     @objc func didTapOneTimeEventButton() {
         let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: true)
         newHabbitVC.modalPresentationStyle = .formSheet
+        newHabbitVC.delegate = self
         present(newHabbitVC, animated: true, completion: nil)
+    }
+}
+
+extension CreateTrackerVC: NewHabbitScreenDelegate {    
+    func createNewTracker(trackerData: TrackerData) {
+        presentedViewController?.dismiss(animated: true)
+        delegate?.createNewTracker(trackerData: trackerData)
     }
 }
 

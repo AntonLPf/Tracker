@@ -61,6 +61,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     @objc private func didTapPlusButton(_ sender: Any) {
         let createTrackerVC = CreateTrackerVC()
         createTrackerVC.modalPresentationStyle = .formSheet
+        createTrackerVC.delegate = self
         present(createTrackerVC, animated: true, completion: nil)
     }
     
@@ -127,7 +128,8 @@ extension TrackersViewController: UICollectionViewDataSource {
         let categories = storage.getTrackers()
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TrackerCell
         let tracker = categories[indexPath.section].trackers[indexPath.row]
-        cell.update(tracker: tracker)
+        cell.setup(tracker: tracker)
+        cell.delegate = self
         return cell
     }
 }
@@ -141,6 +143,26 @@ extension TrackersViewController: UICollectionViewDelegate {
 extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 46)
+    }
+}
+
+extension TrackersViewController: TrackerCellDelegate {
+    func didTapCellPlusButton(trackerId: UUID) {
+        
+    }
+}
+
+extension TrackersViewController: CreateTrackerDelegate {
+    func createNewTracker(trackerData: TrackerData) {
+        presentedViewController?.dismiss(animated: true)
+        try! storage.addNewTracker(data: trackerData)
+        
+        collectionView.performBatchUpdates({
+                    // Perform any insertions, deletions, or other updates here
+                    // For example, you can insert a new item into the collection view
+                    let newIndexPath = IndexPath(item: storage.getTrackers().count - 1, section: 0)
+                    collectionView.insertItems(at: [newIndexPath])
+                }, completion: nil)
     }
 }
 

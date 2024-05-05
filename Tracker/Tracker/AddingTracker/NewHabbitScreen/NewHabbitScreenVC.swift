@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol NewHabbitScreenDelegate {
+    func createNewTracker(trackerData: TrackerData)
+}
+
 class NewHabbitScreenVC: UIViewController {
+    
+    var delegate: NewHabbitScreenDelegate? = nil
         
     private var schedule = [
         WeekDay(name: .monday, isChosen: false),
@@ -37,6 +43,8 @@ class NewHabbitScreenVC: UIViewController {
     private var selectedColor: CategoryColor {
         categoryColors[selectedColorIndexPath.row]
     }
+    
+    private var categoryName: String = "Домашний уют"
             
     private let isIrregularHabbit: Bool
     
@@ -253,6 +261,7 @@ class NewHabbitScreenVC: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
+        nameTextField.delegate = self
         
         textFieldBackgroundView.addSubviews([
             nameTextField
@@ -327,7 +336,27 @@ class NewHabbitScreenVC: UIViewController {
     }
     
     @objc func createButtonTapped() {
+        guard isFormValid else { return }
         
+        guard let name = nameTextField.text else { return }
+        
+        var weekDayNameSet: Set<WeekDay.WeekDayName> {
+            var result: Set<WeekDay.WeekDayName> = []
+            
+            for weekDay in schedule {
+                if weekDay.isChosen {
+                    result.insert(weekDay.name)
+                }
+            }
+            return result
+        }
+        
+        let trackerData = TrackerData(name: name, 
+                                      categoryName: categoryName,
+                                      color: selectedColor,
+                                      icon: selectedEmojy,
+                                      schedule: weekDayNameSet)
+        delegate?.createNewTracker(trackerData: trackerData)
     }
     
     private func updateTrackerSchedule(_ schedule: [WeekDay]) {
@@ -454,6 +483,13 @@ extension NewHabbitScreenVC: UICollectionViewDataSource {
 extension NewHabbitScreenVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         CGSize(width: collectionView.bounds.width, height: Constant.collectionHeaderHeight)
+    }
+}
+
+extension NewHabbitScreenVC: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        createButton.setIsActive(to: isFormValid)
+        return true
     }
 }
 

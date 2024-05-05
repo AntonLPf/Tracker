@@ -23,7 +23,7 @@ final class EmojyCell: UICollectionViewCell {
             emojiLabel
         ])
         
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constant.cornerRadius
         layer.masksToBounds = true
         
         setSelection(isSelected)

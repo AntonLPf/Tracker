@@ -2,16 +2,19 @@
 //  TrackerData.swift
 //  Tracker
 //
-//  Created by Антон Шишкин on 28.04.24.
+//  Created by Антон Шишкин on 05.05.24.
 //
 
 import Foundation
 
-protocol TrackerData {
-    var name: String { get }
-    var categoryName: String { get }
-    var color: CategoryColor { get }
-    var icon: Character { get }
+struct TrackerData {
+    let name: String
     
-    var schedule: Set<WeekDay.WeekDayName> { get }
+    let categoryName: String
+    
+    let color: CategoryColor
+    
+    let icon: Character
+    
+    let schedule: Set<WeekDay.WeekDayName>
 }

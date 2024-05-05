@@ -40,6 +40,7 @@ class InMemoryStorage: TrackersStorage {
         for categoryNameIndex in inMemoryTrackers.indices {
             if inMemoryTrackers.first?.name == categoryName {
                 inMemoryTrackers[categoryNameIndex].trackers.append(newTracker)
+                debugPrint("Added tracker: \(newTracker)")
                 return
             }
         }
@@ -99,6 +100,7 @@ class InMemoryStorage: TrackersStorage {
         for trackerCategoryIndex in inMemoryTrackers.indices {
             if inMemoryTrackers[trackerCategoryIndex].name == categoryName {
                 inMemoryTrackers[trackerCategoryIndex].trackers.append(tracker)
+                debugPrint("Added tracker: \(tracker)")
                 return
             }
         }

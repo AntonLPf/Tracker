@@ -7,10 +7,18 @@
 
 import UIKit
 
+protocol TrackerCellDelegate {
+    func didTapCellPlusButton(trackerId: UUID)
+}
+
 final class TrackerCell: UICollectionViewCell {
     
     static let buttonRadius: CGFloat = 34
-        
+    
+    private var tracker: Tracker = Tracker(id: UUID(), name: "", color: .color1, icon: Character("1"), schedule: [])
+    
+    var delegate: TrackerCellDelegate? = nil
+            
     private lazy var backgroundColoredView: UIView = {
         let coloredView = UIView()
         coloredView.backgroundColor = .red
@@ -21,7 +29,6 @@ final class TrackerCell: UICollectionViewCell {
     private lazy var plusButton: UIButton = {
         let button = UIButton(type: .custom)
         button.backgroundColor = .red
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = TrackerCell.buttonRadius / 2
         button.clipsToBounds = true
@@ -87,14 +94,38 @@ final class TrackerCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(tracker: Tracker) {
+    func setup(tracker: Tracker) {
+        self.tracker = tracker
         nameTextView.text = tracker.name
         backgroundColoredView.backgroundColor = tracker.color.uiColor
         plusButton.backgroundColor = tracker.color.uiColor
         emogiView.setEmoji(tracker.icon)
+        update(isDone: false, numbersOfDays: 3)
+    }
+    
+    func update(isDone: Bool, numbersOfDays: Int) {
+        updateButtonState(to: isDone)
+        updateCountLabel(numbersOfDays: numbersOfDays)
     }
     
     @objc func plussButtonPressed() {
-        
+        delegate?.didTapCellPlusButton(trackerId: tracker.id)
     }
+    
+    private func updateCountLabel(numbersOfDays: Int) {
+        var str = numbersOfDays.description
+        str += " день"
+        countLabel.text = str
+    }
+    
+    private func updateButtonState(to newState: Bool) {
+        let image = UIImage(systemName: newState ? "checkmark" : "plus")
+        plusButton.setImage(image, for: .normal)
+        
+        guard let originalColor = plusButton.backgroundColor else { return }
+        let opacity: CGFloat = newState ? 0.3 : 1.0
+        let newColor = originalColor.withAlphaComponent(opacity)
+        plusButton.backgroundColor = newColor
+    }
+
 }
