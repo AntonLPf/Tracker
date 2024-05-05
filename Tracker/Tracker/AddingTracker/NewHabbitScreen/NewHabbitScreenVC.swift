@@ -449,7 +449,8 @@ extension NewHabbitScreenVC: UICollectionViewDataSource {
             let color = categoryColors[indexPath.row]
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.reuseIdentifier, for: indexPath) as! ColorCell
             cell.setColor(to: color)
-            cell.setSelection(indexPath == selectedColorIndexPath)
+            cell.isSelected = indexPath == selectedColorIndexPath
+            cell.update()
             return cell
         }
     }
@@ -469,12 +470,14 @@ extension NewHabbitScreenVC: UICollectionViewDataSource {
             guard indexPath != selectedColorIndexPath else { return }
             
             let cellToDeselect = collectionView.cellForItem(at: selectedColorIndexPath) as? ColorCell
-            cellToDeselect?.setSelection(false)
+            cellToDeselect?.isSelected = false
+            cellToDeselect?.update()
             
             selectedColorIndexPath = indexPath
             
             let cell = collectionView.cellForItem(at: indexPath) as? ColorCell
-            cell?.setSelection(true)
+            cellToDeselect?.isSelected = true
+            cell?.update()
         }
     }
     
