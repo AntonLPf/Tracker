@@ -43,9 +43,7 @@ class NewHabbitScreenVC: UIViewController {
     private var selectedColor: CategoryColor {
         categoryColors[selectedColorIndexPath.row]
     }
-    
-    private var categoryName: String = "Домашний уют"
-            
+                
     private let isIrregularHabbit: Bool
     
     private var isNameValid: Bool {
@@ -55,8 +53,15 @@ class NewHabbitScreenVC: UIViewController {
         return false
     }
     
+    private var isCategoryNameValid: Bool {
+        if let text = categoriesLabel.text {
+            return !text.isEmpty && text.count > 3
+        }
+        return false
+    }
+    
     private var isFormValid: Bool {
-        isNameValid
+        isNameValid && isCategoryNameValid
     }
     
     private lazy var textFieldBackgroundView: UIView = {
@@ -338,7 +343,10 @@ class NewHabbitScreenVC: UIViewController {
     @objc func createButtonTapped() {
         guard isFormValid else { return }
         
-        guard let name = nameTextField.text else { return }
+        guard 
+            let name = nameTextField.text,
+            let categoryName = categoriesLabel.text
+        else { return }
         
         var weekDayNameSet: Set<WeekDay.WeekDayName> {
             var result: Set<WeekDay.WeekDayName> = []

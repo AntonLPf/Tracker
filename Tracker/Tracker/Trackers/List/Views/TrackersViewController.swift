@@ -128,7 +128,8 @@ extension TrackersViewController: UICollectionViewDataSource {
         let categories = storage.getTrackers()
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TrackerCell
         let tracker = categories[indexPath.section].trackers[indexPath.row]
-        cell.setup(tracker: tracker)
+        let isCompleted = completedTrackers.first { $0.trackerId == tracker.id }
+        cell.setup(tracker: tracker, isCompleted: isCompleted != nil)
         cell.delegate = self
         return cell
     }
@@ -148,7 +149,13 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackersViewController: TrackerCellDelegate {
     func didTapCellPlusButton(trackerId: UUID) {
-        
+        if let recordIndex = (completedTrackers.firstIndex { $0.trackerId == trackerId }) {
+            completedTrackers.remove(at: recordIndex)
+        } else {
+            let record = TrackerRecord(trackerId: trackerId, date: currentDate)
+            completedTrackers.append(record)
+        }
+        collectionView.reloadData()
     }
 }
 
@@ -157,12 +164,7 @@ extension TrackersViewController: CreateTrackerDelegate {
         presentedViewController?.dismiss(animated: true)
         try! storage.addNewTracker(data: trackerData)
         
-        collectionView.performBatchUpdates({
-                    // Perform any insertions, deletions, or other updates here
-                    // For example, you can insert a new item into the collection view
-                    let newIndexPath = IndexPath(item: storage.getTrackers().count - 1, section: 0)
-                    collectionView.insertItems(at: [newIndexPath])
-                }, completion: nil)
+        collectionView.reloadData()
     }
 }
 
