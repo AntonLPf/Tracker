@@ -9,11 +9,17 @@ import UIKit
 
 final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
-    let storage: TrackersStorage = InMemoryStorage()
-        
-    var completedTrackers: [TrackerRecord] = []
+    private let storage: TrackersStorage = InMemoryStorage()
+            
+    private var currentDate = Date()
     
-    var currentDate = Date()
+    private var selectedWeekDay: WeekDay.WeekDayName {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        let weekDayIndex = calendar.component(.weekday, from: currentDate)
+        let weekDay = WeekDay.WeekDayName(rawValue: weekDayIndex - 2)
+        return weekDay ?? .monday
+    }
     
     private lazy var plusButtonView: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapPlusButton))
@@ -21,13 +27,17 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
         return button
     }()
     
-    private lazy var datePickerView: UIBarButtonItem = {
+    private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
+        datePicker.date = currentDate
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
-        let item = UIBarButtonItem(customView: datePicker)
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
-        return item
+        return datePicker
+    }()
+    
+    private lazy var datePickerView: UIBarButtonItem = {
+        UIBarButtonItem(customView: datePicker)
     }()
     
     private lazy var searchController: UISearchController = {
@@ -66,17 +76,13 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        currentDate = selectedDate
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        let formattedDate = dateFormatter.string(from: selectedDate)
-        print(formattedDate.description)
+        currentDate = sender.date
+        datePicker.date = currentDate
+        collectionView.reloadData()
     }
     
     private func updateView() {
-        let categories = storage.getTrackers()
+        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
         guard !categories.isEmpty else {
             setPlaceholder(
                 image: UIImage(resource: .trackersPlaceHolder),
@@ -105,7 +111,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
 extension TrackersViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        storage.getTrackers().count
+        storage.getTrackers(weekDayName: selectedWeekDay).count
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -114,22 +120,47 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! HeaderView
-        let categories = storage.getTrackers()
+        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
         headerView.titleLabel.text = categories[indexPath.section].name
         return headerView
     }
         
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let categories = storage.getTrackers()
+        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
         return categories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let categories = storage.getTrackers()
+        let completedTrackers = storage.getRecords(date: currentDate)
+        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TrackerCell
         let tracker = categories[indexPath.section].trackers[indexPath.row]
-        let isCompleted = completedTrackers.first { $0.trackerId == tracker.id }
-        cell.setup(tracker: tracker, isCompleted: isCompleted != nil)
+        
+        var isCompleted: Bool {
+            completedTrackers.first {
+                $0.trackerId == tracker.id &&
+                $0.date == currentDate
+            } != nil
+        }
+        
+        var numberOfDays: Int {
+            var result = 0
+            
+            for completedTracker in completedTrackers {
+                if completedTracker.trackerId == tracker.id {
+                    result += 1
+                }
+            }
+            return result
+        }
+        
+        let isButtonEnabled = currentDate <= Date()
+        
+        cell.setup(tracker: tracker,
+                   isCompleted: isCompleted,
+                   numberOfDays: numberOfDays,
+                   isButtonEnabled: isButtonEnabled)
+        
         cell.delegate = self
         return cell
     }
@@ -149,11 +180,12 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackersViewController: TrackerCellDelegate {
     func didTapCellPlusButton(trackerId: UUID) {
-        if let recordIndex = (completedTrackers.firstIndex { $0.trackerId == trackerId }) {
-            completedTrackers.remove(at: recordIndex)
+        let completedTrackers = storage.getRecords(date: currentDate)
+        if let record = (completedTrackers.first { $0.trackerId == trackerId }) {
+            storage.removeRecord(record)
         } else {
             let record = TrackerRecord(trackerId: trackerId, date: currentDate)
-            completedTrackers.append(record)
+            storage.addRecord(record)
         }
         collectionView.reloadData()
     }
@@ -162,7 +194,7 @@ extension TrackersViewController: TrackerCellDelegate {
 extension TrackersViewController: CreateTrackerDelegate {
     func createNewTracker(trackerData: TrackerData) {
         presentedViewController?.dismiss(animated: true)
-        try! storage.addNewTracker(data: trackerData)
+        try? storage.addNewTracker(data: trackerData)
         
         collectionView.reloadData()
     }

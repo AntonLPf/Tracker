@@ -94,13 +94,14 @@ final class TrackerCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(tracker: Tracker, isCompleted: Bool) {
+    func setup(tracker: Tracker, isCompleted: Bool, numberOfDays: Int, isButtonEnabled: Bool) {
         self.tracker = tracker
         nameTextView.text = tracker.name
         backgroundColoredView.backgroundColor = tracker.color.uiColor
         plusButton.backgroundColor = tracker.color.uiColor
+        plusButton.isEnabled = isButtonEnabled
         emogiView.setEmoji(tracker.icon)
-        update(isDone: isCompleted, numbersOfDays: 3)
+        update(isDone: isCompleted, numbersOfDays: numberOfDays)
     }
     
     func update(isDone: Bool, numbersOfDays: Int) {

@@ -11,7 +11,7 @@ class InMemoryStorage: TrackersStorage {
     
     private var inMemoryTrackers: [TrackerCategory] = [
         TrackerCategory(name: "Домашний уют", trackers: [
-            Tracker(id: UUID(), name: "Поливать растения", color: .color5, icon: "❤️", schedule: [.monday, .tuesday, .wendsday, .thursday, .friday, .saturday, .sunday]),
+            Tracker(id: UUID(), name: "Поливать растения", color: .color5, icon: "❤️", schedule: [.tuesday, .wendsday, .thursday, .friday, .saturday, .sunday]),
         ]),
         TrackerCategory(name: "Радостные мелочи", trackers: [
             Tracker(id: UUID(), name: "Кошка заслонила камеру на созвоне", color: .color2, icon: "😻", schedule: []),
@@ -19,8 +19,28 @@ class InMemoryStorage: TrackersStorage {
         ]),
     ]
     
-    func getTrackers() -> [TrackerCategory] {
-        inMemoryTrackers
+    private var inMemoryRecords: Set<TrackerRecord> = []
+    
+    func getTrackers(weekDayName: WeekDay.WeekDayName?) -> [TrackerCategory] {
+        guard let weekDayName = weekDayName else { return inMemoryTrackers }
+        
+        var result: [TrackerCategory] = []
+        
+        for trackerCategory in inMemoryTrackers {
+            var filteredTrackers: [Tracker] = []
+            
+            for tracker in trackerCategory.trackers {
+                if tracker.schedule.isEmpty || tracker.schedule.contains(weekDayName) {
+                    filteredTrackers.append(tracker)
+                }
+            }
+            
+            var category = trackerCategory
+            category.trackers = filteredTrackers
+            result.append(category)
+        }
+        
+        return result
     }
     
     func addNewTracker(data: TrackerData) throws {
@@ -88,6 +108,26 @@ class InMemoryStorage: TrackersStorage {
                 inMemoryTrackers[trackerCategoryIndex].trackers.remove(at: trackerIndex)
             }
             throw StorageError.trackerNotFound
+        }
+    }
+    
+    func getRecords(date: Date?) -> Set<TrackerRecord> {
+        var result: Set<TrackerRecord> = inMemoryRecords
+        
+        if let date {
+            return result.filter { $0.date == date }
+        }
+        
+        return result
+    }
+    
+    func addRecord(_ record: TrackerRecord) {
+        inMemoryRecords.insert(record)
+    }
+    
+    func removeRecord(_ record: TrackerRecord) {
+        if let trackerIndex = (inMemoryRecords.firstIndex { $0.trackerId == record.trackerId }) {
+            inMemoryRecords.remove(at: trackerIndex)
         }
     }
     

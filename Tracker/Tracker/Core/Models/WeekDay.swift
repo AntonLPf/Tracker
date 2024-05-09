@@ -11,7 +11,7 @@ struct WeekDay: Hashable {
     let name: WeekDayName
     var isChosen: Bool
     
-    enum WeekDayName {
+    enum WeekDayName: Int {
         case monday
         case tuesday
         case wendsday
