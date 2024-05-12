@@ -199,7 +199,3 @@ extension TrackersViewController: CreateTrackerDelegate {
         collectionView.reloadData()
     }
 }
-
-#Preview {
-    TrackersNavViewController()
-}

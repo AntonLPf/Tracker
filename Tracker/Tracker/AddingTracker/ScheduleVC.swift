@@ -110,15 +110,3 @@ extension ScheduleVC: UITableViewDelegate {
         false
     }
 }
-
-#Preview {
-    ScheduleVC(schedule: [
-        WeekDay(name: .monday, isChosen: true),
-        WeekDay(name: .tuesday, isChosen: true),
-        WeekDay(name: .wendsday, isChosen: true),
-        WeekDay(name: .thursday, isChosen: true),
-        WeekDay(name: .friday, isChosen: true),
-        WeekDay(name: .saturday, isChosen: true),
-        WeekDay(name: .sunday, isChosen: true)
-    ])
-}

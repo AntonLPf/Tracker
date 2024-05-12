@@ -36,8 +36,3 @@ class MainViewController: UITabBarController {
         viewControllers = [trackersVC, statVC]
     }
 }
-
-#Preview {
-    MainViewController()
-}
-

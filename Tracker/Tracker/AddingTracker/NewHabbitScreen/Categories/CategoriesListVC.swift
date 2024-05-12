@@ -30,7 +30,3 @@ class CategoriesListVC: UIViewController {
 //        present(newHabbitVC, animated: true, completion: nil)
     }
 }
-
-#Preview {
-    CategoriesListVC()
-}

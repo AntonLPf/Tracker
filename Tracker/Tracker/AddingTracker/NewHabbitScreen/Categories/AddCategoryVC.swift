@@ -47,7 +47,3 @@ class AddCategoryVC: UIViewController {
         addCategoryButton.setIsActive(to: isValid)
     }
 }
-
-#Preview {
-    AddCategoryVC()
-}

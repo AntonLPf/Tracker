@@ -112,7 +112,7 @@ class InMemoryStorage: TrackersStorage {
     }
     
     func getRecords(date: Date?) -> Set<TrackerRecord> {
-        var result: Set<TrackerRecord> = inMemoryRecords
+        let result: Set<TrackerRecord> = inMemoryRecords
         
         if let date {
             return result.filter { $0.date == date }

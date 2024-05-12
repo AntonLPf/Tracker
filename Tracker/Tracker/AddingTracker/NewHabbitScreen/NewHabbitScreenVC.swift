@@ -83,6 +83,29 @@ class NewHabbitScreenVC: UIViewController {
         return textField
     }()
     
+    private lazy var nameWarningLabel: UIView = {
+        let container = UIView()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Ограничение 38 символов"
+        label.textColor = UIColor(resource: .ypRed)
+        return label
+    }()
+    
+    private lazy var nameWarningContainer: UIView = {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(nameWarningLabel)
+        return container
+    }()
+
+    private lazy var nameStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [textFieldBackgroundView])
+        stack.axis = .vertical
+        stack.spacing = 8
+        return stack
+    }()
+    
     private lazy var categoriesLabel: UILabel = {
         let categoriesLabel = UILabel()
         categoriesLabel.textColor = .ypGray
@@ -241,7 +264,7 @@ class NewHabbitScreenVC: UIViewController {
         vStack.axis = .vertical
         vStack.spacing = Constant.rowSpaceValue
         vStack.distribution = .fill
-        vStack.addArrangedSubview(textFieldBackgroundView)
+        vStack.addArrangedSubview(nameStack)
         vStack.addArrangedSubview(optionsCellsBackgroundView)
         vStack.addArrangedSubview(categoryButton)
         vStack.addArrangedSubview(collectionView)
@@ -263,7 +286,7 @@ class NewHabbitScreenVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setLogo(to: "Новая привычка")
-
+        
         collectionView.dataSource = self
         collectionView.delegate = self
         nameTextField.delegate = self
@@ -409,6 +432,16 @@ class NewHabbitScreenVC: UIViewController {
     private func updateCreateButtonState() {
         createButton.setIsActive(to: isFormValid)
     }
+    
+    private var nameWarningCenterXConstraint: NSLayoutConstraint?
+    
+    private func showNameWarning() {
+        nameStack.addArrangedSubview(nameWarningContainer)
+        NSLayoutConstraint.activate([
+            nameWarningLabel.centerXAnchor.constraint(equalTo: nameTextField.centerXAnchor)
+        ])
+        view.layoutIfNeeded()
+    }
 }
 
 
@@ -499,11 +532,16 @@ extension NewHabbitScreenVC: UICollectionViewDelegateFlowLayout {
 
 extension NewHabbitScreenVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        createButton.setIsActive(to: isFormValid)
+        
+        let newText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? string
+        let textLength = newText.count
+        
+        if textLength > 38 {
+            showNameWarning()
+            createButton.setIsActive(to: false)
+        } else {
+            createButton.setIsActive(to: isFormValid)
+        }
         return true
     }
-}
-
-#Preview {
-    NewHabbitScreenVC(isIrregularHabbit: false)
 }

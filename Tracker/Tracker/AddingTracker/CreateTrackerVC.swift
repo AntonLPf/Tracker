@@ -71,7 +71,3 @@ extension CreateTrackerVC: NewHabbitScreenDelegate {
         delegate?.createNewTracker(trackerData: trackerData)
     }
 }
-
-#Preview {
-    CreateTrackerVC()
-}
