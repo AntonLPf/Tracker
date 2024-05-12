@@ -112,12 +112,17 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
     private func updateView() {
         let categories = storage.getTrackers(weekDayName: selectedWeekDay)
-        if categories.isEmpty {
-            delegate?.didDeleteAllTrackers()
-            placeHolderView.isHidden = false
-        } else {
-            placeHolderView.isHidden = true
+        var thereIsSomeTrackers = false
+        for category in categories {
+            if !category.trackers.isEmpty {
+                placeHolderView.isHidden = true
+                collectionView.isHidden = false
+                return
+            }
         }
+        delegate?.didDeleteAllTrackers()
+        placeHolderView.isHidden = false
+        collectionView.isHidden = true
     }
     
     private func setupCollectionView() {
@@ -161,7 +166,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let completedTrackers = storage.getRecords(date: currentDate)
+        let completedTrackers = storage.getRecords(date: nil)
         let categories = storage.getTrackers(weekDayName: selectedWeekDay)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TrackerCell
         let tracker = categories[indexPath.section].trackers[indexPath.row]
