@@ -24,7 +24,8 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
         var calendar = Calendar.current
         calendar.firstWeekday = 2
         let weekDayIndex = calendar.component(.weekday, from: currentDate)
-        let weekDay = WeekDay.WeekDayName(rawValue: weekDayIndex - 2)
+        let adjustedWeekDayIndex = (weekDayIndex + 5) % 7
+        let weekDay = WeekDay.WeekDayName(rawValue: adjustedWeekDayIndex)
         return weekDay ?? .monday
     }
     
@@ -106,6 +107,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
         currentDate = sender.date
         datePicker.date = currentDate
         collectionView.reloadData()
+        updateView()
     }
     
     private func updateView() {
@@ -191,12 +193,6 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         cell.delegate = self
         return cell
-    }
-}
-
-extension TrackersViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
 }
 
