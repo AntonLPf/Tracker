@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol TrackersViewControllerDelegate {
+    func didAddTracker()
+    func didDeleteAllTrackers()
+}
+
 final class TrackersViewController: UIViewController, UISearchBarDelegate {
+    
+    var delegate: TrackersViewControllerDelegate? = nil
     
     private let storage: TrackersStorage = InMemoryStorage()
             
@@ -103,12 +110,21 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
     private func updateView() {
         let categories = storage.getTrackers(weekDayName: selectedWeekDay)
-        placeHolderView.isHidden = !categories.isEmpty
+        if categories.isEmpty {
+            delegate?.didDeleteAllTrackers()
+            placeHolderView.isHidden = false
+        } else {
+            placeHolderView.isHidden = true
+        }
     }
     
     private func setupCollectionView() {
         collectionView.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
         view.addSubviews([collectionView])
+        
+        let bottomInset: CGFloat = 70
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -209,5 +225,6 @@ extension TrackersViewController: CreateTrackerDelegate {
         try? storage.addNewTracker(data: trackerData)
         updateView()
         collectionView.reloadData()
+        delegate?.didAddTracker()
     }
 }
