@@ -47,13 +47,21 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
         return searchController
     }()
         
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: TwoColumnFlowLayout()
         )
         collectionView.register(TrackerCell.self, forCellWithReuseIdentifier: "Cell")
         return collectionView
+    }()
+    
+    private lazy var placeHolderView: PlaceHolderView = {
+        let placeHolder = PlaceHolderView(
+            image: UIImage(resource: .trackersPlaceHolder),
+            text: "Что будем отслеживать?")
+        
+        return placeHolder
     }()
                 
     override func viewDidLoad() {
@@ -65,6 +73,18 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
         navigationItem.rightBarButtonItem = datePickerView
         
         navigationItem.searchController = searchController
+        
+        setupCollectionView()
+        
+        view.addSubviews([
+            placeHolderView
+        ])
+        
+        NSLayoutConstraint.activate([
+            placeHolderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeHolderView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
         updateView()
     }
     
@@ -83,15 +103,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
     private func updateView() {
         let categories = storage.getTrackers(weekDayName: selectedWeekDay)
-        guard !categories.isEmpty else {
-            setPlaceholder(
-                image: UIImage(resource: .trackersPlaceHolder),
-                text: "Что будем отслеживать?")
-            return
-        }
-        
-        setupCollectionView()
-        
+        placeHolderView.isHidden = !categories.isEmpty
     }
     
     private func setupCollectionView() {
@@ -195,7 +207,7 @@ extension TrackersViewController: CreateTrackerDelegate {
     func createNewTracker(trackerData: TrackerData) {
         presentedViewController?.dismiss(animated: true)
         try? storage.addNewTracker(data: trackerData)
-        
+        updateView()
         collectionView.reloadData()
     }
 }

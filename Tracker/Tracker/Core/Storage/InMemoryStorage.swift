@@ -9,15 +9,21 @@ import Foundation
 
 class InMemoryStorage: TrackersStorage {
     
-    private var inMemoryTrackers: [TrackerCategory] = [
-        TrackerCategory(name: "Домашний уют", trackers: [
-            Tracker(id: UUID(), name: "Поливать растения", color: .color5, icon: "❤️", schedule: [.tuesday, .wendsday, .thursday, .friday, .saturday, .sunday]),
-        ]),
-        TrackerCategory(name: "Радостные мелочи", trackers: [
-            Tracker(id: UUID(), name: "Кошка заслонила камеру на созвоне", color: .color2, icon: "😻", schedule: []),
-            Tracker(id: UUID(), name: "Бабушка прислала открытку в вотсапе", color: .color1, icon: "🌺", schedule: [])
-        ]),
-    ]
+    init(debugMode: Bool = false) {
+        if debugMode {
+            self.inMemoryTrackers = [
+                TrackerCategory(name: "Домашний уют", trackers: [
+                    Tracker(id: UUID(), name: "Поливать растения", color: .color5, icon: "❤️", schedule: [.tuesday, .wendsday, .thursday, .friday, .saturday, .sunday]),
+                ]),
+                TrackerCategory(name: "Радостные мелочи", trackers: [
+                    Tracker(id: UUID(), name: "Кошка заслонила камеру на созвоне", color: .color2, icon: "😻", schedule: []),
+                    Tracker(id: UUID(), name: "Бабушка прислала открытку в вотсапе", color: .color1, icon: "🌺", schedule: [])
+                ]),
+            ]
+        }
+    }
+    
+    private var inMemoryTrackers: [TrackerCategory] = []
     
     private var inMemoryRecords: Set<TrackerRecord> = []
     
