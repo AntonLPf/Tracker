@@ -41,9 +41,10 @@ class InMemoryStorage: TrackersStorage {
                 }
             }
             
-            var category = trackerCategory
-            category.trackers = filteredTrackers
-            result.append(category)
+            let categoryToUpdateName = trackerCategory.name
+            let newCategory = TrackerCategory(name: categoryToUpdateName,
+                                              trackers: filteredTrackers)
+            result.append(newCategory)
         }
         
         return result
@@ -63,15 +64,12 @@ class InMemoryStorage: TrackersStorage {
         
         let categoryName = data.categoryName
         
-        for categoryNameIndex in inMemoryTrackers.indices {
-            if inMemoryTrackers.first?.name == categoryName {
-                inMemoryTrackers[categoryNameIndex].trackers.append(newTracker)
-                debugPrint("Added tracker: \(newTracker)")
-                return
-            }
+        do {
+            try add(tracker: newTracker, toCategory: categoryName)
+        } catch {
+            createNewCategory(name: categoryName)
+            try add(tracker: newTracker, toCategory: categoryName)
         }
-        createNewCategory(name:  categoryName)
-        try add(tracker: newTracker, toCategory: categoryName)
     }
     
     func updateTracker(id: UUID, with data: TrackerData) throws {
@@ -85,17 +83,32 @@ class InMemoryStorage: TrackersStorage {
                 let currentTrackerId = inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex].id
                 guard currentTrackerId == id else { continue }
                 
-                if data.categoryName == inMemoryTrackers[trackerCategoryIndex].name {
-                    let oldTracker = inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex]
+                let oldCategory = inMemoryTrackers[trackerCategoryIndex]
+                
+                if data.categoryName == oldCategory.name {
+                    let oldTracker = oldCategory.trackers[trackerIndex]
                     let newTracker = Tracker(id: oldTracker.id,
                                              name: data.name,
                                              color: data.color,
                                              icon: data.icon,
                                              schedule: data.schedule)
-                    inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex] = newTracker
+                    
+                    let oldTrackers = oldCategory.trackers
+                    
+                    var newTrackers = oldTrackers
+                    newTrackers[trackerIndex] = newTracker
+                    let newCategory = TrackerCategory(name: oldCategory.name, trackers: newTrackers)
+                    
+                    inMemoryTrackers[trackerCategoryIndex] = newCategory
                     return
                 } else {
-                    let trackerToMove = inMemoryTrackers[trackerCategoryIndex].trackers.remove(at: trackerIndex)
+                    var newTrackersWithoutMovedTracker = oldCategory.trackers
+                    newTrackersWithoutMovedTracker.remove(at: trackerIndex)
+                    
+                    let newCategory = TrackerCategory(name: oldCategory.name, trackers: newTrackersWithoutMovedTracker)
+                    inMemoryTrackers[trackerCategoryIndex] = newCategory
+                    
+                    let trackerToMove = oldCategory.trackers[trackerIndex]
                     
                     let newTracker = Tracker(id: trackerToMove.id,
                                              name: data.name,
@@ -116,8 +129,14 @@ class InMemoryStorage: TrackersStorage {
             for trackerIndex in inMemoryTrackers[trackerCategoryIndex].trackers.indices {
                 let currentTrackerId = inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex].id
                 guard currentTrackerId == id else { continue }
+                
+                var newTrackers = inMemoryTrackers[trackerCategoryIndex].trackers
+                newTrackers.remove(at: trackerIndex)
+                
+                let oldCategory = inMemoryTrackers[trackerCategoryIndex]
+                let newCategory = TrackerCategory(name: oldCategory.name, trackers: newTrackers)
                     
-                inMemoryTrackers[trackerCategoryIndex].trackers.remove(at: trackerIndex)
+                inMemoryTrackers[trackerCategoryIndex] = newCategory
             }
             throw StorageError.trackerNotFound
         }
@@ -149,9 +168,18 @@ class InMemoryStorage: TrackersStorage {
     }
     
     private func add(tracker: Tracker, toCategory categoryName: String) throws {
-        for trackerCategoryIndex in inMemoryTrackers.indices {
-            if inMemoryTrackers[trackerCategoryIndex].name == categoryName {
-                inMemoryTrackers[trackerCategoryIndex].trackers.append(tracker)
+        for categoryNameIndex in inMemoryTrackers.indices {
+            if inMemoryTrackers.first?.name == categoryName {
+                let categoryToUpdate = inMemoryTrackers[categoryNameIndex]
+                let trackers = categoryToUpdate.trackers
+                
+                var newTrackers = trackers
+                newTrackers.append(tracker)
+                
+                let newCategory = TrackerCategory(name: categoryToUpdate.name,
+                                                  trackers: newTrackers)
+                
+                inMemoryTrackers[categoryNameIndex] = newCategory
                 debugPrint("Added tracker: \(tracker)")
                 return
             }
