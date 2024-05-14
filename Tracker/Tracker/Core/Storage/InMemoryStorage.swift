@@ -86,18 +86,24 @@ class InMemoryStorage: TrackersStorage {
                 guard currentTrackerId == id else { continue }
                 
                 if data.categoryName == inMemoryTrackers[trackerCategoryIndex].name {
-                    inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex].name = data.name
-                    inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex].color = data.color
-                    inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex].icon = data.icon
+                    let oldTracker = inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex]
+                    let newTracker = Tracker(id: oldTracker.id,
+                                             name: data.name,
+                                             color: data.color,
+                                             icon: data.icon,
+                                             schedule: data.schedule)
+                    inMemoryTrackers[trackerCategoryIndex].trackers[trackerIndex] = newTracker
                     return
                 } else {
-                    var trackerToMove = inMemoryTrackers[trackerCategoryIndex].trackers.remove(at: trackerIndex)
-                    trackerToMove.name = data.name
-                    trackerToMove.color = data.color
-                    trackerToMove.icon = data.icon
+                    let trackerToMove = inMemoryTrackers[trackerCategoryIndex].trackers.remove(at: trackerIndex)
                     
+                    let newTracker = Tracker(id: trackerToMove.id,
+                                             name: data.name,
+                                             color: data.color,
+                                             icon: data.icon,
+                                             schedule: data.schedule)
                     createNewCategory(name: data.categoryName)
-                    try add(tracker: trackerToMove, toCategory: data.categoryName)
+                    try add(tracker: newTracker, toCategory: data.categoryName)
                     return
                 }
             }

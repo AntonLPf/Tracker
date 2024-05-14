@@ -112,7 +112,6 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
     private func updateView() {
         let categories = storage.getTrackers(weekDayName: selectedWeekDay)
-        var thereIsSomeTrackers = false
         for category in categories {
             if !category.trackers.isEmpty {
                 placeHolderView.isHidden = true
