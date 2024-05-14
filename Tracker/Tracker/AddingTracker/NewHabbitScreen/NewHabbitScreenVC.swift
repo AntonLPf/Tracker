@@ -16,13 +16,13 @@ class NewHabbitScreenVC: UIViewController {
     var delegate: NewHabbitScreenDelegate? = nil
         
     private var schedule = [
-        WeekDay(name: .monday, isChosen: false),
-        WeekDay(name: .tuesday, isChosen: false),
-        WeekDay(name: .wendsday, isChosen: false),
-        WeekDay(name: .thursday, isChosen: false),
-        WeekDay(name: .friday, isChosen: false),
-        WeekDay(name: .saturday, isChosen: false),
-        WeekDay(name: .sunday, isChosen: false)
+        WeekDay(name: .monday, isChosen: true),
+        WeekDay(name: .tuesday, isChosen: true),
+        WeekDay(name: .wendsday, isChosen: true),
+        WeekDay(name: .thursday, isChosen: true),
+        WeekDay(name: .friday, isChosen: true),
+        WeekDay(name: .saturday, isChosen: true),
+        WeekDay(name: .sunday, isChosen: true)
     ]
     
     private let emojies: [Character] = [
@@ -53,6 +53,16 @@ class NewHabbitScreenVC: UIViewController {
         return false
     }
     
+    private var isScheduleValid: Bool {
+        var result = true
+        
+        if !isIrregularHabbit && !schedule.contains(where: { $0.isChosen == true }) {
+            result = false
+        }
+        
+        return result
+    }
+    
     private var isCategoryNameValid: Bool {
         if let text = categoriesLabel.text {
             return !text.isEmpty && text.count > 3
@@ -61,7 +71,7 @@ class NewHabbitScreenVC: UIViewController {
     }
     
     private var isFormValid: Bool {
-        isNameValid && isCategoryNameValid
+        isNameValid && isCategoryNameValid && isScheduleValid
     }
     
     private lazy var textFieldBackgroundView: UIView = {
@@ -175,11 +185,11 @@ class NewHabbitScreenVC: UIViewController {
             scheduleVStack.axis = .vertical
             scheduleVStack.spacing = 2
             scheduleVStack.addArrangedSubview(scheduleLabel)
-            if let text = weekDaysLabel.text, !text.isEmpty {
-                scheduleVStack.addArrangedSubview(weekDaysLabel)
-            }
+
             scheduleVStack.translatesAutoresizingMaskIntoConstraints = false
             optionsCellsBackgroundView.addSubview(scheduleVStack)
+            
+            updateWeekDaysLabel()
             
             let chevron2ImageView = UIImageView()
             chevron2ImageView.image = chevronImage
@@ -374,6 +384,8 @@ class NewHabbitScreenVC: UIViewController {
         var weekDayNameSet: Set<WeekDay.WeekDayName> {
             var result: Set<WeekDay.WeekDayName> = []
             
+            guard !isIrregularHabbit else { return result }
+            
             for weekDay in schedule {
                 if weekDay.isChosen {
                     result.insert(weekDay.name)
@@ -393,10 +405,20 @@ class NewHabbitScreenVC: UIViewController {
     private func updateTrackerSchedule(_ schedule: [WeekDay]) {
         self.schedule = schedule
         updateWeekDaysLabel()
+        updateCreateButtonState()
     }
     
     private func updateWeekDaysLabel() {
-        var weekDaysString = ""
+        var weekDaysString = "Каждый день"
+        
+        if !isScheduleValid {
+            weekDaysString = "Укажите расписание"
+            weekDaysLabel.text = weekDaysString
+            scheduleVStack.addArrangedSubview(weekDaysLabel)
+            weekDaysLabel.textColor = .ypRed
+            return
+        }
+        
         var isEveryDay = true
         
         for weekDay in schedule {
@@ -406,22 +428,22 @@ class NewHabbitScreenVC: UIViewController {
             }
         }
         
-        guard !isEveryDay else {
-            weekDaysLabel.text = "Каждый день"
-            return
-        }
-        
-        for weekday in schedule {
-            if weekday.isChosen {
-                if !weekDaysString.isEmpty {
-                    weekDaysString.append(", ")
+        if !isEveryDay {
+            weekDaysString = ""
+            for weekday in schedule {
+                if weekday.isChosen {
+                    if !weekDaysString.isEmpty {
+                        weekDaysString.append(", ")
+                    }
+                    weekDaysString.append(weekday.name.shortDescription)
                 }
-                weekDaysString.append(weekday.name.shortDescription)
             }
         }
+        
         if !weekDaysString.isEmpty {
             weekDaysLabel.text = weekDaysString
             scheduleVStack.addArrangedSubview(weekDaysLabel)
+            weekDaysLabel.textColor = .ypGray
         } else if let lastLabel = scheduleVStack.arrangedSubviews.last {
             scheduleVStack.removeArrangedSubview(lastLabel)
             lastLabel.removeFromSuperview()
