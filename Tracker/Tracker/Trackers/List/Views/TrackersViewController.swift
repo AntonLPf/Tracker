@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol TrackersViewControllerDelegate {
+protocol TrackersViewControllerDelegate: AnyObject {
     func didAddTracker()
     func didDeleteAllTrackers()
 }
 
 final class TrackersViewController: UIViewController, UISearchBarDelegate {
     
-    var delegate: TrackersViewControllerDelegate? = nil
+    weak var delegate: TrackersViewControllerDelegate? = nil
     
     private let storage: TrackersStorage = InMemoryStorage()
             

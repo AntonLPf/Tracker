@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol TrackersNavViewControllerDelegate {
+protocol TrackersNavViewControllerDelegate: AnyObject {
     func didAddTracker()
     func didDeleteAllTrackers()
 }
 
 class TrackersNavViewController: UINavigationController {
     
-    var trackersVCdelegate: TrackersNavViewControllerDelegate? = nil
+    weak var trackersVCdelegate: TrackersNavViewControllerDelegate? = nil
         
     override func viewDidLoad() {
         let trackersVC = TrackersViewController()

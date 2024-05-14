@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol CreateTrackerDelegate {
+protocol CreateTrackerDelegate: AnyObject {
     func createNewTracker(trackerData: TrackerData)
 }
 
 class CreateTrackerVC: UIViewController {
     
-    var delegate: CreateTrackerDelegate? = nil
+    weak var delegate: CreateTrackerDelegate? = nil
         
     private lazy var habbitButton: UIButton =  {
         ActionButton(title: "Привычка", action: #selector(didTapHabbitButton), target: self)

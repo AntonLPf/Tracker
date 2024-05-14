@@ -13,7 +13,7 @@ protocol ScheduleVCDelegate: AnyObject {
 
 class ScheduleVC: UIViewController {
     
-    var delegate: ScheduleVCDelegate? = nil
+    weak var delegate: ScheduleVCDelegate? = nil
     
     private lazy var doneButton: UIButton = {
         ActionButton(title: "Готово", action: #selector(didTapDoneButton), target: self)

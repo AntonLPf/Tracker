@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackerCellDelegate {
+protocol TrackerCellDelegate: AnyObject {
     func didTapCellPlusButton(trackerId: UUID)
 }
 
@@ -17,7 +17,7 @@ final class TrackerCell: UICollectionViewCell {
     
     private var tracker: Tracker = Tracker(id: UUID(), name: "", color: .color1, icon: Character("1"), schedule: [])
     
-    var delegate: TrackerCellDelegate? = nil
+    weak var delegate: TrackerCellDelegate? = nil
             
     private lazy var backgroundColoredView: UIView = {
         let coloredView = UIView()

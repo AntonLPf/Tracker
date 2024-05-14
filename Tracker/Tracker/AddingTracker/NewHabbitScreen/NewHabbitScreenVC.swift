@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol NewHabbitScreenDelegate {
+protocol NewHabbitScreenDelegate: AnyObject {
     func createNewTracker(trackerData: TrackerData)
 }
 
 class NewHabbitScreenVC: UIViewController {
     
-    var delegate: NewHabbitScreenDelegate? = nil
+    weak var delegate: NewHabbitScreenDelegate? = nil
         
     private var schedule = [
         WeekDay(name: .monday, isChosen: true),
