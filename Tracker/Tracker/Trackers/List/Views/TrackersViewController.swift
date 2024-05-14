@@ -207,6 +207,7 @@ extension TrackersViewController: TrackerCellDelegate {
             storage.addRecord(record)
         }
         collectionView.reloadData()
+        updateView()
     }
 }
 
