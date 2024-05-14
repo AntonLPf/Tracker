@@ -301,6 +301,11 @@ class NewHabbitScreenVC: UIViewController {
         collectionView.delegate = self
         nameTextField.delegate = self
         
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+        
         textFieldBackgroundView.addSubviews([
             nameTextField
         ])
@@ -400,6 +405,10 @@ class NewHabbitScreenVC: UIViewController {
                                       icon: selectedEmojy,
                                       schedule: weekDayNameSet)
         delegate?.createNewTracker(trackerData: trackerData)
+    }
+    
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
     }
     
     private func updateTrackerSchedule(_ schedule: [WeekDay]) {
@@ -564,6 +573,11 @@ extension NewHabbitScreenVC: UITextFieldDelegate {
         } else {
             createButton.setIsActive(to: isFormValid)
         }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }
