@@ -81,6 +81,7 @@ extension ScheduleVC: UITableViewDataSource {
         let toggle = UISwitch()
         toggle.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
         toggle.isOn = schedule[indexPath.row].isChosen
+        toggle.onTintColor = UIColor(resource: .ypBlue)
         toggle.translatesAutoresizingMaskIntoConstraints = false
         cell.addSubview(toggle)
         
