@@ -20,15 +20,6 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
             
     private var currentDate = Date()
     
-    private var selectedWeekDay: WeekDay.WeekDayName {
-        var calendar = Calendar.current
-        calendar.firstWeekday = 2
-        let weekDayIndex = calendar.component(.weekday, from: currentDate)
-        let adjustedWeekDayIndex = (weekDayIndex + 5) % 7
-        let weekDay = WeekDay.WeekDayName(rawValue: adjustedWeekDayIndex)
-        return weekDay ?? .monday
-    }
-    
     private lazy var plusButtonView: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapPlusButton))
         button.tintColor = .black
@@ -111,7 +102,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
     }
     
     private func updateView() {
-        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
+        let categories = storage.getTrackers(date: currentDate)
         for category in categories {
             if !category.trackers.isEmpty {
                 placeHolderView.isHidden = true
@@ -145,7 +136,7 @@ final class TrackersViewController: UIViewController, UISearchBarDelegate {
 extension TrackersViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        storage.getTrackers(weekDayName: selectedWeekDay).count
+        storage.getTrackers(date: currentDate).count
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -154,19 +145,19 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! HeaderView
-        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
+        let categories = storage.getTrackers(date: currentDate)
         headerView.titleLabel.text = categories[indexPath.section].name
         return headerView
     }
         
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
+        let categories = storage.getTrackers(date: currentDate)
         return categories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let completedTrackers = storage.getRecords(date: nil)
-        let categories = storage.getTrackers(weekDayName: selectedWeekDay)
+        let categories = storage.getTrackers(date: currentDate)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TrackerCell
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         

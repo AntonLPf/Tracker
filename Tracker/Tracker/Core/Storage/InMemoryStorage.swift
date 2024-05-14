@@ -27,17 +27,23 @@ class InMemoryStorage: TrackersStorage {
     
     private var inMemoryRecords: Set<TrackerRecord> = []
     
-    func getTrackers(weekDayName: WeekDay.WeekDayName?) -> [TrackerCategory] {
-        guard let weekDayName = weekDayName else { return inMemoryTrackers }
-        
+    func getTrackers(date: Date) -> [TrackerCategory] {
         var result: [TrackerCategory] = []
+        
+        let weekDayName = getWeekDay(from: date)
         
         for trackerCategory in inMemoryTrackers {
             var filteredTrackers: [Tracker] = []
             
             for tracker in trackerCategory.trackers {
-                if tracker.schedule.isEmpty || tracker.schedule.contains(weekDayName) {
-                    filteredTrackers.append(tracker)
+                if isTrackerIrregular(tracker: tracker) {
+                    if !isTrackerHasRecords(tracker: tracker) {
+                        filteredTrackers.append(tracker)
+                    }
+                } else {
+                    if tracker.schedule.contains(weekDayName) {
+                        filteredTrackers.append(tracker)
+                    }
                 }
             }
             
@@ -186,5 +192,28 @@ class InMemoryStorage: TrackersStorage {
         }
         throw StorageError.categoryNotFound
     }
-        
+    
+    private func getWeekDay(from date: Date) -> WeekDay.WeekDayName {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        let weekDayIndex = calendar.component(.weekday, from: date)
+        let adjustedWeekDayIndex = (weekDayIndex + 5) % 7
+        let weekDay = WeekDay.WeekDayName(rawValue: adjustedWeekDayIndex)
+        return weekDay ?? .monday
+    }
+    
+    private func isTrackerIrregular(tracker: Tracker) -> Bool {
+        tracker.schedule.isEmpty
+    }
+    
+    private func isTrackerHasRecords(tracker: Tracker) -> Bool {
+        var result = false
+        let records = getRecords(date: nil)
+        if records.first(where: { $0.trackerId == tracker.id }) != nil {
+            result = true
+            return result
+        }
+        return result
+    }
+    
 }

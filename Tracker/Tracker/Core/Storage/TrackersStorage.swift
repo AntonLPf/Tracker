@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TrackersStorage {
-    func getTrackers(weekDayName: WeekDay.WeekDayName?) -> [TrackerCategory]
+    func getTrackers(date: Date) -> [TrackerCategory]
     func addNewTracker(data: TrackerData) throws
     func updateTracker(id: UUID, with data: TrackerData) throws
     func deleteTracker(id: UUID) throws

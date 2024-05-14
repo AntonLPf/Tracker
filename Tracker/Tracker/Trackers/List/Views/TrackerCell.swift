@@ -38,6 +38,7 @@ final class TrackerCell: UICollectionViewCell {
     
     private lazy var countLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
         label.text = "1 день"
         return label
     }()

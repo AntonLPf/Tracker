@@ -23,16 +23,17 @@ class MainViewController: UITabBarController {
         return button
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .ypWhite
-        
-        tabBar.tintColor = .ypBlue
-        tabBar.unselectedItemTintColor = .ypGray
-        tabBar.isTranslucent = false
-        tabBar.barTintColor = .ypBlue
-        tabBar.backgroundColor = .ypWhite
+
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.backgroundColor = .ypWhite
+            tabBar.scrollEdgeAppearance = appearance
+        }
         
         let trackersVC = TrackersNavViewController()
         trackersVC.trackersVCdelegate = self
@@ -49,11 +50,14 @@ class MainViewController: UITabBarController {
             selectedImage: nil
         )
         viewControllers = [trackersVC, statVC]
-        view.addSubviews([filtersButton])
+        view.addSubviews([
+            filtersButton,
+        ])
         
         NSLayoutConstraint.activate([
             filtersButton.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: -16),
-            filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
         ])
     }
     
