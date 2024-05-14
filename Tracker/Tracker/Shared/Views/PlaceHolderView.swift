@@ -9,8 +9,8 @@ import UIKit
 
 class PlaceHolderView: UIView {
     
-    let image: UIImage
-    let text: String
+    private let image: UIImage
+    private let text: String
     
     private lazy var placeHolderImageView: UIImageView = {
         let view = UIImageView(image: image)

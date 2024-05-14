@@ -50,14 +50,14 @@ class CreateTrackerVC: UIViewController {
         ])
     }
         
-    @objc func didTapHabbitButton() {
+    @objc private func didTapHabbitButton() {
         let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: false)
         newHabbitVC.modalPresentationStyle = .formSheet
         newHabbitVC.delegate = self
         present(newHabbitVC, animated: true, completion: nil)
     }
     
-    @objc func didTapOneTimeEventButton() {
+    @objc private func didTapOneTimeEventButton() {
         let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: true)
         newHabbitVC.modalPresentationStyle = .formSheet
         newHabbitVC.delegate = self

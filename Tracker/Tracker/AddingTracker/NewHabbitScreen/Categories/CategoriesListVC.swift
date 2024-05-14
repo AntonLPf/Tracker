@@ -24,7 +24,7 @@ class CategoriesListVC: UIViewController {
         
     }
     
-    @objc func didTapaddCategoryButton() {
+    @objc private func didTapaddCategoryButton() {
 //        let newHabbitVC = NewHabbitScreenVC(isIrregularHabbit: true)
 //        newHabbitVC.modalPresentationStyle = .formSheet
 //        present(newHabbitVC, animated: true, completion: nil)
