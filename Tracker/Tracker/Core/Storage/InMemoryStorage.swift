@@ -37,7 +37,12 @@ class InMemoryStorage: TrackersStorage {
             
             for tracker in trackerCategory.trackers {
                 if isTrackerIrregular(tracker: tracker) {
-                    if !isTrackerHasRecords(tracker: tracker) {
+                    let records = getTrackerRecords(trackerId: tracker.id)
+                    if let record = records.first {
+                        if record.date == date {
+                            filteredTrackers.append(tracker)
+                        }
+                    } else {
                         filteredTrackers.append(tracker)
                     }
                 } else {
@@ -141,7 +146,7 @@ class InMemoryStorage: TrackersStorage {
                 
                 let oldCategory = inMemoryTrackers[trackerCategoryIndex]
                 let newCategory = TrackerCategory(name: oldCategory.name, trackers: newTrackers)
-                    
+                
                 inMemoryTrackers[trackerCategoryIndex] = newCategory
             }
             throw StorageError.trackerNotFound
@@ -206,14 +211,10 @@ class InMemoryStorage: TrackersStorage {
         tracker.schedule.isEmpty
     }
     
-    private func isTrackerHasRecords(tracker: Tracker) -> Bool {
-        var result = false
+    private func getTrackerRecords(trackerId: UUID) -> Set<TrackerRecord> {
         let records = getRecords(date: nil)
-        if records.first(where: { $0.trackerId == tracker.id }) != nil {
-            result = true
-            return result
-        }
-        return result
+        let filteredRecords = records.filter({ $0.trackerId == trackerId })
+        return Set(filteredRecords)
     }
     
 }
