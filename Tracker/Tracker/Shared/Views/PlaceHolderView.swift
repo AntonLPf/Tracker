@@ -23,6 +23,7 @@ class PlaceHolderView: UIView {
         let label = UILabel()
         label.text = text
         label.numberOfLines = 2
+        label.font = UIFont.systemFont(ofSize: 12)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
